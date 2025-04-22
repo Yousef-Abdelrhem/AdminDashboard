@@ -92,7 +92,7 @@
 
                 <div class="border-[#EFEFEF] border-t-2 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 mb-4"></div>
                 <button @click="validateForm"
-                    class="btn bg-[#763A26] text-xl border-0 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Sign
+                    class="btn bg-[#763A26] text-white text-xl border-0 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Sign
                     Up</button>
                 <div class="flex flex-row gap-1 text-xl items-center mt-3 md:hidden">
                     <p class="text-gray-500">Already have an account?</p>
