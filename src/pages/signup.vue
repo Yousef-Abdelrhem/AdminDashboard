@@ -159,29 +159,19 @@
               />
             </svg>
 
-            <svg
-              v-else
-              @click="toggleConfirmPasswordVisibility"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-6.5 cursor-pointer text-[#7C7C7C] sm:size-6 md:size-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0ZM2.458 12C3.732 7.943 7.523 5.25 12 5.25c4.478 0 8.268 2.693 9.542 6.75-1.274 4.057-5.064 6.75-9.542 6.75-4.477 0-8.268-2.693-9.542-6.75Z"
-              />
-            </svg>
-          </label>
-          <p
-            v-if="errors.confirmpassword"
-            class="mb-1 w-94 text-left text-red-400 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160"
-          >
-            {{ errors.confirmpassword }}
-          </p>
+
+                <div class="border-[#EFEFEF] border-t-2 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 mb-4"></div>
+                <button @click="validateForm"
+                    class="btn bg-[#763A26] text-white text-xl border-0 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Sign
+                    Up</button>
+                <div class="flex flex-row gap-1 text-xl items-center mt-3 md:hidden">
+                    <p class="text-gray-500">Already have an account?</p>
+                    <router-link to="/login" class="text-[#763A26] underline">Login!</router-link>
+                </div>
+                <p v-if="serverError"
+                    class="text-red-400 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 text-center mt-3">{{ serverError
+                    }}</p>
+            </div>
         </div>
         <!-- Remember me -->
         <div
