@@ -18,6 +18,11 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.2",
     "daisyui": "^5.0.27",
+    "prettier": "^3.5.3",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "vite": "^6.3.1"
-  }
+  },
+  "plugins": [
+    "prettier-plugin-tailwindcss"
+  ]
 }
