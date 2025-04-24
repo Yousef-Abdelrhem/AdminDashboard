@@ -1,9 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Arabic:wght@400;500;600;700&display=swap');
 
 @import "tailwindcss";
-/* @plugin "daisyui" {
+@plugin "daisyui" {
   themes: light --default;
-} */
+}
 
 @theme {
   /* Main Colors */
@@ -18,7 +18,7 @@
   --color-main-700: #ab4a2a;
   --color-main-800: #8e4026;
   --color-main-900: #763a26;
-  --color-main-950: #401b0f;
+  --color-main-950: #3A1910;
 
   /* Gray Colors */
   --color-gray-50: #f7f7f7;
