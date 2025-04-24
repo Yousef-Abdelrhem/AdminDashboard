@@ -1,23 +1,63 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 
 const activeMenu = ref<string>("Home Page");
 const expanded = ref<boolean>(true);
-console.log(expanded.value);
+const isOnMobile = ref(false);
+const sideBarItems = [
+  { name: "Home Page", path: "/", icon: "home-icon.svg" },
+  {
+    name: "Product Management",
+    path: "/product-management",
+  },
+  {
+    name: "Order Management",
+    path: "/order-management",
+  },
+  {
+    name: "Customer Management",
+    path: "/customer-management",
+  },
+  {
+    name: "Store Configuration",
+    path: "/store-configuration",
+  },
+  {
+    name: "Translation Management",
+    path: "/translation-management",
+  },
+  {
+    name: "Currency Management",
+    path: "/currency-management",
+  },
+];
 
-/// but icon if the it is small it it should trun into icons
-// on click of expanded
+const checkScreenSize = () => {
+  isOnMobile.value = window.innerWidth <= 768;
+};
+
+onMounted(() => {
+  checkScreenSize();
+  window.addEventListener("resize", checkScreenSize);
+});
 </script>
+
 <template>
-  <div>
+  <div class="flex flex-col md:flex-row">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
       stroke-width="1.5"
       stroke="currentColor"
-      :class="['m-3 size-6 h-10 w-7 cursor-pointer', expanded ? 'hidden' : 'block']"
-      @click="expanded = !expanded"
+      :class="[
+        'text-main-950 ml-1 size-6 h-10 w-7 cursor-pointer',
+        expanded || !isOnMobile ? 'hidden' : 'block',
+      ]"
+      @click="
+        expanded = !expanded;
+        checkScreenSize();
+      "
     >
       <path
         stroke-linecap="round"
@@ -28,8 +68,10 @@ console.log(expanded.value);
 
     <nav
       :class="[
-        'items-left bg-white-100 fixed inset-0 z-50 container flex h-screen w-[20rem] transform flex-col justify-between overflow-hidden border-gray-200 p-2  duration-300 border-r-1',
-        expanded ? 'translate-x-0' : '-translate-x-full'
+        'items-left bg-white-100 z-50 container flex h-screen w-[20rem] transform flex-col justify-between overflow-hidden border-r-1 border-gray-200 p-2 duration-300',
+        expanded || !isOnMobile
+          ? 'translate-x-0'
+          : 'absolute -translate-x-full',
       ]"
     >
       <div class="">
@@ -40,10 +82,7 @@ console.log(expanded.value);
           stroke-width="1.5"
           stroke="currentColor"
           class="text-main-950 absolute right-5 size-8 translate-y-10 md:hidden"
-          @click="
-            expanded = !expanded;
-            console.log(expanded);
-          "
+          @click="expanded = !expanded"
         >
           <path
             stroke-linecap="round"
@@ -79,7 +118,8 @@ console.log(expanded.value);
           </svg>
         </div>
         <ul class="flex w-full flex-col gap-1 pr-5 pl-5">
-          <li
+          <router-link
+            :to="sideBarItems[0].path"
             @click="activeMenu = 'Home Page'"
             :class="[
               'hover:bg-main group flex h-[3rem] w-full items-center justify-start gap-3 rounded border-b-1 border-gray-100 pl-3 font-[500] text-gray-500 group-hover:text-white hover:font-bold hover:text-white',
@@ -101,8 +141,10 @@ console.log(expanded.value);
               />
             </svg>
             <span>Home Page</span>
-          </li>
-          <li
+          </router-link>
+
+          <router-link
+            :to="sideBarItems[1].path"
             @click="activeMenu = 'Product Management'"
             :class="[
               'hover:bg-main group flex h-[3rem] w-full items-center justify-start gap-3 rounded border-b-1 border-gray-100 pl-3 font-[500] text-gray-500 group-hover:text-white hover:font-bold hover:text-white',
@@ -148,9 +190,10 @@ console.log(expanded.value);
               </defs>
             </svg>
             <span>Product Management</span>
-          </li>
+          </router-link>
           <!-- 3 -->
-          <li
+          <router-link
+            :to="sideBarItems[2].path"
             @click="activeMenu = 'Order Management'"
             :class="[
               'hover:bg-main group flex h-[3rem] w-full items-center justify-start gap-3 rounded border-b-1 border-gray-100 pl-3 font-[500] text-gray-500 group-hover:text-white hover:font-bold hover:text-white',
@@ -194,8 +237,9 @@ console.log(expanded.value);
               />
             </svg>
             <span>Order Management</span>
-          </li>
-          <li
+          </router-link>
+          <router-link
+            :to="sideBarItems[3].path"
             @click="activeMenu = 'Customer Management'"
             :class="[
               'hover:bg-main group flex h-[3rem] w-full items-center justify-start gap-3 rounded border-b-1 border-gray-100 pl-3 font-[500] text-gray-500 group-hover:text-white hover:font-bold hover:text-white',
@@ -235,8 +279,9 @@ console.log(expanded.value);
               />
             </svg>
             <span>Customer Management</span>
-          </li>
-          <li
+          </router-link>
+          <router-link
+            :to="sideBarItems[4].path"
             @click="activeMenu = 'Store Configuration'"
             :class="[
               'hover:bg-main group flex h-[3rem] w-full items-center justify-start gap-3 rounded border-b-1 border-gray-100 pl-3 font-[500] text-gray-500 group-hover:text-white hover:font-bold hover:text-white',
@@ -271,8 +316,10 @@ console.log(expanded.value);
               />
             </svg>
             <span>Store Configuration </span>
-          </li>
-          <li
+          </router-link>
+
+          <router-link
+            :to="sideBarItems[5].path"
             @click="activeMenu = 'Translation Management'"
             :class="[
               'hover:bg-main group flex h-[3rem] w-full items-center justify-start gap-3 rounded border-b-1 border-gray-100 pl-3 font-[500] text-gray-500 group-hover:text-white hover:font-bold hover:text-white',
@@ -315,8 +362,10 @@ console.log(expanded.value);
               />
             </svg>
             <span>Translation Management</span>
-          </li>
-          <li
+          </router-link>
+
+          <router-link
+            :to="sideBarItems[6].path"
             @click="activeMenu = 'Currency Management'"
             :class="[
               'hover:bg-main group flex h-[3rem] w-full items-center justify-start gap-3 rounded border-b-1 border-gray-100 pl-3 font-[500] text-gray-500 group-hover:text-white hover:font-bold hover:text-white',
@@ -351,7 +400,7 @@ console.log(expanded.value);
               />
             </svg>
             <span>Currency Management</span>
-          </li>
+          </router-link>
         </ul>
       </div>
       <button
@@ -381,6 +430,10 @@ console.log(expanded.value);
         <span class="font-Inter text-[1rem] font-bold">Log out</span>
       </button>
     </nav>
+
+    <div v-if="!expanded || !isOnMobile" class="flex-1 p-1">
+      <router-view />
+    </div>
   </div>
 </template>
 
