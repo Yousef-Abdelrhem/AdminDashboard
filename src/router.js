@@ -24,3 +24,31 @@ const router = createRouter({
 });
 
 export default router;
+
+// const sideBarItems = [
+//   { name: "Home Page", path: "/", icon: "home-icon.svg" },
+//   {
+//     name: "Product Management",
+//     path: "/product-management",
+//   },
+//   {
+//     name: "Order Management",
+//     path: "/order-management",
+//   },
+//   {
+//     name: "Customer Management",
+//     path: "/customer-management",
+//   },
+//   {
+//     name: "Store Configuration",
+//     path: "/store-configuration",
+//   },
+//   {
+//     name: "Translation Management",
+//     path: "/translation-management",
+//   },
+//   {
+//     name: "Currency Management",
+//     path: "/currency-management",
+//   },
+// ];
