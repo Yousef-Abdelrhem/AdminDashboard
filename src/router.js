@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Signup from "./pages/signup.vue";
 import Login from "./pages/login.vue";
-import Sidebar from "./components/Sidebar.vue";
+import Home from "./pages/Home.vue";
+import SideBar from "./components/SideBar.vue";
 
 const routes = [
   {
@@ -14,7 +15,16 @@ const routes = [
   },
   {
     path: "/",
-    component: Sidebar,
+    component: SideBar,
+    children: [
+      { path: "/", component: Home },
+      { path: "/product-management", component: Home },
+      { path: "/order-management", component: Home },
+      { path: "/customer-management", component: Home },
+      { path: "/store-configuration", component: Home },
+      { path: "/translation-management", component: Home },
+      { path: "/currency-management", component: Home },
+    ],
   },
 ];
 
