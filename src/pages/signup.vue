@@ -1,44 +1,44 @@
 <template>
-    <div class="flex h-[56rem] w-screen bg-white shadow-2xl md:h-[43.45rem]">
+    <div class="flex w-screen bg-white shadow-2xl h-[41.45rem] sm:h-[43.45rem] sm:h-100vh">
         <!-- form  left side-->
         <div class="flex h-full flex-grow-1 items-center justify-center md:w-[50%] lg:w-[20rem] xl:w-[35rem]">
             <div class="flex w-92 flex-col items-center justify-center md:w-140">
                 <h1 class="text-center text-3xl font-bold text-[#763A26] sm:text-4xl md:text-3xl">
                     Sign Up
                 </h1>
-                <p class="mb-5 text-center text-lg text-gray-500 sm:text-xl">
+                <p class="mb-5 text-center text-sm text-gray-500 sm:text-lg md:text-xl">
                     Please enter your email and password and confirm your password
                 </p>
                 <!-- username -->
-                <div class="mb-2 flex w-94 flex-col sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+                <div class="mb-1 md:mb-2 flex w-78 flex-col sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
                     <label for="username"
-                        class="w-94 text-left font-bold text-[#656565] sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Username</label>
+                        class="w-78 text-left font-bold text-[#656565] sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Username</label>
                     <input id="username" v-model="username" type="text" placeholder="John Doe" @input="validateUsername"
-                        class="input w-94 border-[#DCDCDC] bg-white text-gray-800 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
+                        class="input w-78 border-[#DCDCDC] bg-white text-gray-800 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
                     <p v-if="errors.username"
-                        class="mb-1 mt-1 w-94 text-left text-red-400 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+                        class="mb-1 mt-1 w-78 text-left text-red-400 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
                         {{ errors.username }}
                     </p>
                 </div>
                 <!-- email -->
-                <div class="mb-2 flex w-94 flex-col sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+                <div class="mb-1 md:mb-2 flex w-78 flex-col sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
                     <label for="email"
-                        class="w-94 text-left font-bold text-[#656565] sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">E-mail</label>
+                        class="w-78 text-left font-bold text-[#656565] sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">E-mail</label>
                     <input id="email" v-model="email" type="text" placeholder="example@gmail.com" @input="validateEmail"
-                        class="input w-94 border-[#DCDCDC] bg-white text-gray-800 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
+                        class="input w-78 border-[#DCDCDC] bg-white text-gray-800 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
                     <p v-if="errors.email"
-                        class="mb-1 mt-1 w-94 text-left text-red-400 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+                        class="mb-1 mt-1 w-78 text-left text-red-400 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
                         {{ errors.email }}
                     </p>
                 </div>
                 <!-- password -->
-                <div class="mb-2 flex w-94 flex-col sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+                <div class="mb-1 md:mb-2 flex w-78 flex-col sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
                     <label for="password"
-                        class="w-94 text-left font-bold text-[#656565] sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Password</label>
-                    <label class="input w-94 border-[#DCDCDC] bg-white sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+                        class="w-78 text-left font-bold text-[#656565] sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Password</label>
+                    <label class="input w-78 border-[#DCDCDC] bg-white sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
                         <input id="password" :type="passwordVisible ? 'text' : 'password'" v-model="password"
                             placeholder="**************" @input="validatePassword"
-                            class="w-94 border-[#DCDCDC] bg-white text-gray-800 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
+                            class="w-78 border-[#DCDCDC] bg-white text-gray-800 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
                         <hr class="absolute top-2 right-11 h-6 border-1 border-[#7C7C7C]" />
                         <svg @click="togglePasswordVisibility" v-if="!passwordVisible"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -54,18 +54,18 @@
                         </svg>
                     </label>
                     <p v-if="errors.password"
-                        class="mb-1 mt-1 w-94 text-left text-red-400 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160"
+                        class="mb-1 mt-1 w-78 text-left text-red-400 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160"
                         v-html="errors.password"></p>
                 </div>
                 <!-- confirm password -->
-                <div class="mb-2 flex w-94 flex-col sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+                <div class="mb-1 md:mb-2 flex w-78 flex-col sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
                     <label for="confirmpassword"
-                        class="w-94 text-left font-bold text-[#656565] sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Confirm
+                        class="w-78 text-left font-bold text-[#656565] sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Confirm
                         Password</label>
-                    <label class="input w-94 border-[#DCDCDC] bg-white sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+                    <label class="input w-78 border-[#DCDCDC] bg-white sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
                         <input id="confirmpassword" :type="confirmPasswordVisible ? 'text' : 'password'"
                             v-model="confirmpassword" placeholder="**************" @input="validateConfirmPassword"
-                            class="w-94 border-[#DCDCDC] bg-white text-gray-800 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
+                            class="w-78 border-[#DCDCDC] bg-white text-gray-800 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
                         <hr class="absolute top-2 right-11 h-6 border-1 border-[#7C7C7C]" />
                         <svg @click="toggleConfirmPasswordVisibility" v-if="!confirmPasswordVisible"
                             xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -81,12 +81,12 @@
                         </svg>
                     </label>
                     <p v-if="errors.confirmpassword"
-                        class="mb-1 mt-1 w-94 text-left text-red-400 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+                        class="mb-1 mt-1 w-78 text-left text-red-400 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
                         {{ errors.confirmpassword }}
                     </p>
                 </div>
                 <!-- Remember me -->
-                <div class="mb-3 mt-2 flex w-94 items-start sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+                <div class="mb-3 mt-2 flex w-78 items-start sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
                     <label class="label text-[#7C7C7C]">
                         <input type="checkbox" v-model="rememberMe"
                             class="checkbox rounded-xs border-[#7C7C7C] font-light text-[#7C7C7C]" />
@@ -94,18 +94,18 @@
                     </label>
                 </div>
                 <!-- line break -->
-                <div class="border-[#EFEFEF] border-t-2 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 mb-4">
+                <div class="border-[#EFEFEF] border-t-2 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 mb-4">
                 </div>
                 <!-- button -->
                 <button @click="validateForm"
-                    class="btn bg-[#763A26] text-white text-xl border-0 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Sign
+                    class="btn bg-[#763A26] text-white text-xl border-0 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Sign
                     Up</button>
-                <div class="flex flex-row gap-1 text-xl items-center mt-3 md:hidden">
+                <div class="flex flex-row gap-1 text-lg items-center mt-3 md:hidden">
                     <p class="text-gray-500">Already have an account?</p>
                     <router-link to="/login" class="text-[#763A26] underline">Login!</router-link>
                 </div>
                 <p v-if="serverError"
-                    class="text-red-400 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 text-center mt-3">{{
+                    class="text-red-400 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 text-center mt-3">{{
                         serverError
                     }}</p>
             </div>
