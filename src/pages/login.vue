@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-[56rem] w-screen bg-white shadow-2xl md:h-[43.45rem]">
+  <div class="flex  w-screen bg-white shadow-2xl h-[41.45rem] sm:h-[43.45rem] sm:h-100vh">
     <!-- form left side -->
     <div
       class="flex h-full flex-grow-1 items-center justify-center md:w-[50%] lg:w-[20rem] xl:w-[35rem]"
@@ -14,22 +14,22 @@
           Please enter your email and password
         </p>
         <!-- email -->
-        <div class="flex flex-col mb-2 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+        <div class="flex flex-col mb-2 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
           <label for="email"
-            class="text-[#656565] font-bold text-left w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">E-mail</label>
+            class="text-[#656565] font-bold text-left w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">E-mail</label>
           <input id="email" v-model="email" type="text" placeholder="example@gmail.com" @input="validateEmail"
-            class="input bg-white border-[#DCDCDC] text-gray-800 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
-          <p v-if="errors.email" class="text-red-400 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 text-left mb-1">
+            class="input bg-white border-[#DCDCDC] text-gray-800 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
+          <p v-if="errors.email" class="text-red-400 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 text-left mb-1">
             {{ errors.email }}</p>
         </div>
         <!-- password -->
-        <div class="flex flex-col mb-2 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+        <div class="flex flex-col mb-2 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
           <label for="password"
-            class="text-[#656565] font-bold text-left w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Password</label>
-          <label class="input bg-white border-[#DCDCDC] w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
+            class="text-[#656565] font-bold text-left w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Password</label>
+          <label class="input bg-white border-[#DCDCDC] w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">
             <input id="password" :type="passwordVisible ? 'text' : 'password'" v-model="password"
               placeholder="**************" @input="validatePassword"
-              class=" bg-white border-[#DCDCDC] text-gray-800 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
+              class=" bg-white border-[#DCDCDC] text-gray-800 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160" />
             <hr class="border-[#7C7C7C] border-1 h-6 absolute right-11 top-2">
             <svg @click="togglePasswordVisibility" v-if="!passwordVisible" xmlns="http://www.w3.org/2000/svg"
               fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -51,13 +51,13 @@
           </label>
 
           <p v-if="errors.password"
-            class="text-red-400 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 text-left mb-1">{{ errors.password }}
+            class="text-red-400 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 text-left mb-1">{{ errors.password }}
 
           </p>
         </div>
 
         <div
-          class="mb-3 flex w-94 items-start sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160"
+          class="mb-3 flex w-78 items-start sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160"
         >
           <label class="label text-[#7C7C7C]">
             <input
@@ -70,10 +70,10 @@
         </div>
 
 
-        <div class="border-[#EFEFEF] border-t-2 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 mb-4"></div>
+        <div class="border-[#EFEFEF] border-t-2 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 mb-4"></div>
         <button @click="validateForm"
-          class="btn bg-[#763A26] text-white text-xl border-0 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Login</button>
-        <div class="flex flex-row gap-1 text-xl items-center mt-3 md:hidden">
+          class="btn bg-[#763A26] text-white text-xl border-0 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Login</button>
+        <div class="flex flex-row gap-1 text-lg items-center mt-3 md:hidden">
 
 
           <p class="text-gray-500">Don't have an account?</p>
@@ -82,7 +82,7 @@
           >
         </div>
 
-        <p v-if="serverError" class="text-red-400 w-94 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 text-center mt-3">
+        <p v-if="serverError" class="text-red-400 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 text-center mt-3">
           {{ serverError }}</p>
 
 
