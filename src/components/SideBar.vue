@@ -8,7 +8,7 @@ const sideBarItems = [
   { name: "Home Page", path: "/", icon: "home-icon.svg" },
   {
     name: "Product Management",
-    path: "/product-management",
+    path: "/product-management/add-product",
   },
   {
     name: "Order Management",
@@ -68,7 +68,7 @@ onMounted(() => {
 
     <nav
       :class="[
-        'items-left bg-white-100 z-50 container flex h-screen w-[20rem] transform flex-col justify-between overflow-hidden border-r-1 border-gray-200 p-2 duration-300',
+        'items-left bg-white-100 z-50 container flex min-h-screen w-[20rem] transform flex-col justify-between overflow-hidden border-r-1 border-gray-200 p-2 duration-300',
         expanded || !isOnMobile
           ? 'translate-x-0'
           : 'absolute -translate-x-full',

@@ -78,5 +78,6 @@
   box-sizing: border-box;
 }
 
-
-  
+.font--light {
+ @apply text-[0.9rem] font-normal text-[#7C7C7C]
+}
