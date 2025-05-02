@@ -19,15 +19,14 @@ const routes = [
     path: "/",
     component: SideBar,
     children: [
-      { path: "/", component: Home },
-      { path: "/product-management", component: ProductManagement , children: [
-        { path: "/add-product", component: AddProduct },
-      ]},
-      { path: "/order-management", component: Home },
-      { path: "/customer-management", component: Home },
-      { path: "/store-configuration", component: Home },
-      { path: "/translation-management", component: Home },
-      { path: "/currency-management", component: Home },
+      { path: "", component: Home },
+      { path: "product-management", component: ProductManagement},
+      { path: "order-management", component: Home },
+      { path: "customer-management", component: Home },
+      { path: "store-configuration", component: Home },
+      { path: "translation-management", component: Home },
+      { path: "currency-management", component: Home },
+      { path: "product-management/add-product", component: AddProduct },
     ],
   },
 ];
