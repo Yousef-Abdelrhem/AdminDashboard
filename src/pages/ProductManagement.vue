@@ -8,7 +8,7 @@
             <div class="flex justify-between">
                 <h2 class="text-main-950 mb-6 text-2xl font-bold">List of Products</h2>
                 <div class="flex gap-3">
-                    <div class="btn border-0 bg-[#F1D6B7] px-2 md:px-5 text-main-900">
+                    <div class="btn border-0 bg-[#F1D6B7] px-2 md:px-5 text-main-900" @click="addProduct">
                         <img src="/src/assets/icons/add.svg" alt="Add product icon" />
                         <p class="hidden sm:flex">Add Product</p>
                     </div>
@@ -42,7 +42,9 @@ import ProductTable from "../components/ProductTable.vue";
 import SearchBar from "../components/SearchBar.vue";
 import ViewDetails from "../components/ViewDetails.vue";
 import { ref, computed, reactive } from "vue";
+import { useRouter } from "vue-router";
 
+const router =useRouter();
 const allProducts = ref([
     {
         productId: 1001,
@@ -314,6 +316,10 @@ function deleteSelected() {
         (product) => !selectedProducts.value.includes(product.productId)
     );
     selectedProducts.value = [];
+}
+
+function addProduct(){
+    router.push('/product-management/add-product')
 }
 
 const totalPages = computed(() =>

@@ -8,7 +8,7 @@ const sideBarItems = [
   { name: "Home Page", path: "/", icon: "home-icon.svg" },
   {
     name: "Product Management",
-    path: "/product-management/add-product",
+    path: "/product-management",
   },
   {
     name: "Order Management",
