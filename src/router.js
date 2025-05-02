@@ -3,6 +3,7 @@ import Signup from "./pages/signup.vue";
 import Login from "./pages/login.vue";
 import Home from "./pages/Home.vue";
 import SideBar from "./components/SideBar.vue";
+import ProductManagement from "./pages/ProductManagement.vue";
 
 const routes = [
   {
@@ -18,7 +19,7 @@ const routes = [
     component: SideBar,
     children: [
       { path: "/", component: Home },
-      { path: "/product-management", component: Home },
+      { path: "/product-management", component: ProductManagement },
       { path: "/order-management", component: Home },
       { path: "/customer-management", component: Home },
       { path: "/store-configuration", component: Home },
