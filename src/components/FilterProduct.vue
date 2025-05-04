@@ -5,7 +5,7 @@
         </div>
 
         <div v-if="openFilterMenu"
-            class="absolute top-11 right-0 z-10 w-80 rounded-lg border border-main-900 bg-white shadow-md p-4">
+            class="absolute top-11 right-0 z-10 w-60 md:w-80 rounded-lg border border-main-900 bg-white shadow-md p-4">
 
             <button class="absolute top-2 right-2 text-xl font-bold cursor-pointer" @click="openFilterMenu = false">
                 <img src="../assets/icons/close.svg" alt="Close icon" />
@@ -32,16 +32,18 @@
                 <div>
                     <label class="flex items-center space-x-2 text-main-900 font-semibold">
                         <input type="checkbox" class="accent-main-900" v-model="filters.priceEnabled" />
-                        <span :class="filters.priceEnabled ? 'text-main-900' : 'text-gray-500'">Choose Product Price</span>
-                        <span class="ml-11 text-sm text-main-900 font-bold ransition-colors duration-300" :class="filters.priceEnabled ? 'text-main-900' : 'hidden'">${{ filters.price }}</span>
+                        <span :class="filters.priceEnabled ? 'text-main-900' : 'text-gray-500'">Choose Product
+                            Price</span>
+                        <span class="ml-11 text-sm text-main-900 font-bold ransition-colors duration-300"
+                            :class="filters.priceEnabled ? 'text-main-900' : 'hidden'">${{ filters.price }}</span>
                     </label>
 
                     <div class="flex justify-between items-center mt-1">
                         <input type="range" class="w-full accent-main-900" min="200" step="10" max="600"
                             v-model="filters.price" :disabled="!filters.priceEnabled" />
-                        </div>
-                        
-                        <div class="flex justify-between text-sm text-gray-600 mt-1 px-1">
+                    </div>
+
+                    <div class="flex justify-between text-sm text-gray-600 mt-1 px-1">
                         <span>$200</span>
                         <span>$600</span>
                     </div>
@@ -49,7 +51,8 @@
                 <div>
                     <label class="flex items-center space-x-2 text-main-900 font-semibold">
                         <input type="checkbox" class="accent-main-900" v-model="filters.categoryEnabled" />
-                        <span :class="filters.categoryEnabled ? 'text-main-900' : 'text-gray-500'">Choose Category</span>
+                        <span :class="filters.categoryEnabled ? 'text-main-900' : 'text-gray-500'">Choose
+                            Category</span>
                     </label>
                     <select class="w-full border border-gray-400 hover:accent-amber-100 h-10 rounded-md px-3 mt-1"
                         v-model="filters.category" :disabled="!filters.categoryEnabled">
