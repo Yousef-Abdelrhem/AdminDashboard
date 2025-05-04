@@ -44,7 +44,7 @@ import ViewDetails from "../components/ViewDetails.vue";
 import { ref, computed, reactive } from "vue";
 import { useRouter } from "vue-router";
 
-const router =useRouter();
+const router = useRouter();
 const allProducts = ref([
     {
         productId: 1001,
