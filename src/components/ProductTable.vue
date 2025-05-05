@@ -143,8 +143,8 @@ const props = defineProps({
     nextPage: Function,
     changePage: Function,
 });
-const emit = defineEmits(['update:selectedProducts', 'delete-selected']);
 
+const emit = defineEmits(['update:selectedProducts', 'delete-selected']);
 
 function handleCheckboxChange(productId) {
     const index = props.selectedProducts.indexOf(productId);
@@ -154,6 +154,7 @@ function handleCheckboxChange(productId) {
         props.selectedProducts.push(productId);
     }
 }
+
 const truncatedDescription = (description) => {
     if (!description) return '';
     const sentences = description.split(' ').map(sentence => sentence.trim()).filter(Boolean);

@@ -56,6 +56,7 @@ import { useRouter } from "vue-router";
 import { getAllProducts } from "../services/productService";
 
 const router = useRouter();
+
 const selectedProducts = ref([]);
 const allProducts = ref([]);
 const products = ref([]);
