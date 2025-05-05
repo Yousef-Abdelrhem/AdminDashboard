@@ -20,16 +20,26 @@
             </div>
 
             <div class="flex justify-between gap-5 mb-4">
-                <SearchBar />
+                <SearchBar v-model="searchQuery" />
+
                 <FilterProduct @apply-filters="handleFilters" />
             </div>
             <div v-if="products.length === 0" class="text-center text-gray-500 py-4">
                 Oops! We couldn't find any products that match your filters.
             </div>
-            <ProductTable v-else :products="products" v-model:selectedProducts="selectedProducts"
-                :currentPage="currentPage" :itemsPerPage="itemsPerPage" :openMenuIndex="openMenuIndex"
-                :paginatedProducts="paginatedProducts" :totalPages="totalPages" :handleAction="handleAction"
-                :toggleMenu="toggleMenu" :prevPage="prevPage" :nextPage="nextPage" :changePage="changePage" />
+            <ProductTable v-else :products="products.length ? products : []" 
+                v-model:selectedProducts="selectedProducts"
+                :currentPage="currentPage"
+                :itemsPerPage="itemsPerPage"
+                :openMenuIndex="openMenuIndex"
+                :paginatedProducts="paginatedProducts"
+                :totalPages="totalPages"
+                :handleAction="handleAction"
+                :toggleMenu="toggleMenu"
+                :prevPage="prevPage"
+                :nextPage="nextPage"
+                :changePage="changePage"
+                />
         </section>
         <ViewDetails v-if="showViewModal" :viewedProduct="viewedProduct" @close="showViewModal = false" />
     </div>
@@ -41,186 +51,33 @@ import FilterProduct from "../components/FilterProduct.vue";
 import ProductTable from "../components/ProductTable.vue";
 import SearchBar from "../components/SearchBar.vue";
 import ViewDetails from "../components/ViewDetails.vue";
-import { ref, computed, reactive } from "vue";
+import { ref, computed, reactive, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
+import { getAllProducts } from "../services/productService";
 
 const router = useRouter();
-const allProducts = ref([
-    {
-        productId: 1001,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Bag",
-        description: "Small Bag...",
-        price: "$500",
-        inStock: 60,
-        category: "Bags",
-    },
-    {
-        productId: 1002,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Shoes",
-        description: "Running shoes...",
-        price: "$120",
-        inStock: 30,
-        category: "Footwear",
-    },
-    {
-        productId: 1003,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Watch",
-        description: "Smart watch...",
-        price: "$250",
-        inStock: 15,
-        category: "Accessories",
-    },
-    {
-        productId: 1004,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Bag",
-        description: "Small Bag...",
-        price: "$500",
-        inStock: 60,
-        category: "Bags",
-    },
-    {
-        productId: 1005,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Shoes",
-        description: "Running shoes...",
-        price: "$120",
-        inStock: 30,
-        category: "Footwear",
-    },
-    {
-        productId: 1006,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Watch",
-        description: "Smart watch...",
-        price: "$250",
-        inStock: 15,
-        category: "Accessories",
-    },
-    {
-        productId: 1007,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Bag",
-        description: "Small Bag...",
-        price: "$500",
-        inStock: 60,
-        category: "Bags",
-    },
-    {
-        productId: 1008,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Shoes",
-        description: "Running shoes...",
-        price: "$120",
-        inStock: 30,
-        category: "Footwear",
-    },
-    {
-        productId: 1009,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Watch",
-        description: "Smart watch...",
-        price: "$250",
-        inStock: 15,
-        category: "Accessories",
-    },
-    {
-        productId: 1010,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Bag",
-        description: "Small Bag...",
-        price: "$500",
-        inStock: 60,
-        category: "Bags",
-    },
-    {
-        productId: 1011,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Shoes",
-        description: "Running shoes...",
-        price: "$120",
-        inStock: 30,
-        category: "Footwear",
-    },
-    {
-        productId: 1012,
-        productImage: [
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png",
-            "src/assets/icons/image.png"
-        ],
-        productName: "Watch",
-        description: "Smart watch...",
-        price: "$250",
-        inStock: 15,
-        category: "Accessories",
-    },
-]);
-const products = ref([...allProducts.value]);
+
 const selectedProducts = ref([]);
+const allProducts = ref([]);
+const products = ref([]);
+const searchQuery = ref('');
+
+onMounted(async () => {
+    try {
+        const response = await getAllProducts();
+        if (response && Array.isArray(response.products)) {
+            allProducts.value = response.products; 
+            products.value = [...allProducts.value]; 
+        } else {
+            console.error("Error: Invalid data structure.", response);
+        }
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    }
+});
 
 const currentPage = ref(1);
 const itemsPerPage = 9;
-
 const openMenuIndex = ref(null)
 
 function toggleMenu(index) {
@@ -244,22 +101,19 @@ function handleFilters(filters) {
     const filtered = allProducts.value.filter(product => {
         let isValid = true;
 
-        
         if (filters.idEnabled && filters.id !== '') {
             isValid = isValid && product.productId.toString().includes(filters.id.toString());
         }
 
         if (filters.nameEnabled && filters.name !== '') {
-            isValid = isValid && product.productName.toLowerCase().includes(filters.name.toLowerCase());
+            isValid = isValid && product.name.toLowerCase().includes(filters.name.toLowerCase());
         }
 
-        
         if (filters.priceEnabled) {
             const numericPrice = Number(product.price.replace('$', ''));
             isValid = isValid && numericPrice <= filters.price;
         }
 
-        
         if (filters.categoryEnabled && filters.category !== '') {
             isValid = isValid && product.category === filters.category;
         }
@@ -297,13 +151,12 @@ function handleAction(action, product) {
     } else if (action === 'view') {
         viewedProduct.value = product
         showViewModal.value = true
-        openMenuIndex.value = null
     } else {
-        products.value = products.value.filter(p => p.productId !== product.productId)
-        openMenuIndex.value = null
+        allProducts.value = allProducts.value.filter(p => p.productId !== product.productId);
+        products.value = products.value.filter(p => p.productId !== product.productId);
     }
 
-    // openMenuIndex.value = null
+    openMenuIndex.value = null
 }
 
 function deleteSelected() {
@@ -312,13 +165,17 @@ function deleteSelected() {
         return;
     }
 
+    allProducts.value = allProducts.value.filter(
+        (product) => !selectedProducts.value.includes(product.productId)
+    );
     products.value = products.value.filter(
         (product) => !selectedProducts.value.includes(product.productId)
     );
+    
     selectedProducts.value = [];
 }
 
-function addProduct(){
+function addProduct() {
     router.push('/product-management/add-product')
 }
 
@@ -351,4 +208,35 @@ const areAllSelected = computed(() => {
     );
 });
 
+watch(searchQuery, (newValue) => {
+    if (newValue.trim() === '') {
+        handleFilters(filters);
+        return;
+    }
+
+    const filteredBySearch = allProducts.value.filter(product =>
+        product.name.toLowerCase().includes(newValue.toLowerCase())
+    );
+
+    const filtered = filteredBySearch.filter(product => {
+        let isValid = true;
+
+        if (filters.idEnabled && filters.id !== '') {
+            isValid = isValid && product.productId.toString().includes(filters.id.toString());
+        }
+
+        if (filters.priceEnabled) {
+            const numericPrice = Number(product.price.replace('$', ''));
+            isValid = isValid && numericPrice <= filters.price;
+        }
+
+        if (filters.categoryEnabled && filters.category !== '') {
+            isValid = isValid && product.category === filters.category;
+        }
+
+        return isValid;
+    });
+
+    products.value = filtered;
+});
 </script>
