@@ -33,7 +33,7 @@ const sideBarItems = [
 ];
 
 const checkScreenSize = () => {
-  isOnMobile.value = window.innerWidth <= 768;
+  isOnMobile.value = window.innerWidth <= 1024;
 };
 
 onMounted(() => {
@@ -81,7 +81,7 @@ onMounted(() => {
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="text-main-950 absolute right-5 size-8 translate-y-10 md:hidden"
+          class="text-main-950 absolute right-5 size-8 translate-y-10 lg:hidden"
           @click="expanded = !expanded"
         >
           <path
