@@ -5,6 +5,7 @@ import Home from "./pages/Home.vue";
 import AddProduct from "./pages/AddProduct.vue";
 import SideBar from "./components/SideBar.vue";
 import ProductManagement from "./pages/ProductManagement.vue";
+import OrderDetails from "./pages/OrderDetails.vue";
 
 const routes = [
   {
@@ -25,7 +26,7 @@ const routes = [
       { path: "customer-management", component: Home },
       { path: "store-configuration", component: Home },
       { path: "translation-management", component: Home },
-      { path: "currency-management", component: Home },
+      { path: "currency-management", component: OrderDetails },
       { path: "product-management/add-product", component: AddProduct },
     ],
   },
