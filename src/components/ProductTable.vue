@@ -1,29 +1,29 @@
 <template>
     <div class="rounded-lg border border-gray-200 overflow-auto">
         <div v-if="paginatedProducts && paginatedProducts.length > 0">
-            <table class="w-280">
+            <table class="w-full">
                 <thead>
                     <tr class="text-gray-800">
-                        <th class="py-5 px-2">Product Id</th>
-                        <th class="py-5 px-2">Product Image</th>
-                        <th class="py-5 px-2">Product Name</th>
-                        <th class="py-5 px-2">Description</th>
-                        <th class="py-5 px-2">Price</th>
-                        <th class="py-5 px-2">In Stock</th>
-                        <th class="py-5 px-2">Category</th>
-                        <th class="py-5 px-2">Actions</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Product Id</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Product Image</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Product Name</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Description</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Price</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">In Stock</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Category</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="(product, index) in paginatedProducts" :key="product.productId"
                         :class="{ 'bg-[#F1D6B7]': index % 2 === 0 }">
-                        <td class="text-center py-3">
+                        <td class="text-center py-3 px-4 text-md">
                             <input type="checkbox" :value="product.productId"
                                 :checked="props.selectedProducts.includes(product.productId)"
                                 @change="handleCheckboxChange(product.productId)" class="mr-2 accent-main-900" />
                             {{ product.productId }}
                         </td>
-                        <td class="py-3 px-2 flex justify-center items-center">
+                        <td class="py-3 flex justify-center items-center">
                             <img class="rounded-full border-3 border-main-900 w-15 h-15"
                                 :src="product.productImages && product.productImages.length > 0 ? product.productImages[0] : 'default-image-url'" />
                         </td>

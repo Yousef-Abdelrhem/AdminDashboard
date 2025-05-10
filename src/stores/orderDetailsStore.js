@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
-export const useOrderStore = defineStore('order', () => {
+export const useOrdersDetailsStore = defineStore('order', () => {
   const totalPrice = ref(0);
 
   function setTotalPrice(price) {
