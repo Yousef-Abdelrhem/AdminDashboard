@@ -427,7 +427,9 @@ onMounted(() => {
             stroke-linejoin="round"
           />
         </svg>
-        <span class="font-Inter text-[1rem] font-bold">Log out</span>
+        <router-link to="/login" class="font-Inter text-[1rem] font-bold"
+          >Log out</router-link
+        >
       </button>
     </nav>
 
