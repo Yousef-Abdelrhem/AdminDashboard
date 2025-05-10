@@ -98,7 +98,7 @@
                 </tbody>
             </table>
 
-            <div class="pagination my-4 flex justify-center gap-1 text-gray-600">
+            <!-- <div class="pagination my-4 flex justify-center gap-1 text-gray-600">
                 <button class="w-9 h-9 flex justify-center items-center rounded border-2 border-[#F1D6B7]"
                     @click="prevPage" :disabled="currentPage === 1">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
@@ -116,6 +116,36 @@
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                         stroke="currentColor" class="size-4">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+            </div> -->
+        
+        <div class="pagination my-4 flex justify-center gap-1 text-gray-600">
+                <!-- Prev Button -->
+                <button class="w-9 h-9 flex justify-center items-center rounded border-2 border-[#F1D6B7]"
+                    @click="props.prevPage" :disabled="props.currentPage === 1">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="M15.75 19.5 8.25 12l7.5-7.5" />
+                    </svg>
+                </button>
+
+                <!-- Page Numbers -->
+                <span v-for="(page, index) in getVisiblePages()" :key="index"
+                    class="w-9 h-9 flex justify-center items-center rounded border-2 border-[#F1D6B7] cursor-pointer"
+                    :class="{ 'bg-[#F1D6B7] text-main-900 font-bold': props.currentPage === page }"
+                    @click="typeof page === 'number' && props.changePage(page)">
+                    {{ page }}
+                </span>
+
+                <!-- Next Button -->
+                <button class="w-9 h-9 flex justify-center items-center rounded border-2 border-[#F1D6B7]"
+                    @click="props.nextPage" :disabled="props.currentPage === props.totalPages">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="size-4" fill="none" viewBox="0 0 24 24"
+                        stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                            d="m8.25 4.5 7.5 7.5-7.5 7.5" />
                     </svg>
                 </button>
             </div>
@@ -162,4 +192,40 @@ const truncatedDescription = (description) => {
     return firstFourSentences + (sentences.length > 3 ? '...' : '');
 };
 
+const getVisiblePages = () => {
+    const pages = [];
+    const total = props.totalPages;
+    const current = props.currentPage;
+
+    if (total <= 3) {
+        for (let i = 1; i <= total; i++) pages.push(i);
+        return pages;
+    }
+
+    if (current === 1) {
+        return [1, 2, '...', total];
+    }
+
+    if (current === 2) {
+        return [1, 2, 3, '...', total];
+    }
+
+    if (current === 3) {
+        return [1, '...', 3, 4, '...', total];
+    }
+
+    if (current === 4) {
+        return [1, '...', 4, 5, total];
+    }
+
+    if (current >= 5 && current < total) {
+        return [1, 2, '...', current, total];
+    }
+
+    if (current === total) {
+        return [1, 2, '...', total - 1, total];
+    }
+
+    return [1, '...', total]; 
+};
 </script>
