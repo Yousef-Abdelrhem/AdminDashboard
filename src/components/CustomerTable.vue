@@ -1,17 +1,17 @@
 <template>
     <div class="rounded-lg border border-gray-200 overflow-auto">
         <div v-if="paginatedCustomers && paginatedCustomers.length > 0">
-            <table class="w-280">
+            <table class="w-full">
                 <thead>
                     <tr class="text-gray-800">
-                        <th class="py-5 px-4 text-md w-20">Id</th>
-                        <th class="py-5 px-2 w-40">Customer Image</th>
-                        <th class="py-5 px-2 w-30">Customer Name</th>
-                        <th class="py-5 px-2">Customer Email</th>
-                        <th class="py-5 px-2 w-30">No.of Order</th>
-                        <th class="py-5 px-2">Total</th>
-                        <th class="py-5 px-2 ">Tags</th>
-                        <th class="py-5 px-2">Actions</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Id</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Customer Image</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Customer Name</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Customer Email</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">No.of Order</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Total</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Tags</th>
+                        <th class="py-5 px-4 text-sm md:text-lg">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -20,16 +20,16 @@
                         <td class="text-center py-3 px-4 text-md">
                             {{ customer.customerId }}
                         </td>
-                        <td class="py-3 px-2 flex justify-center items-center">
+                        <td class="py-3 flex justify-center items-center">
                             <img class="rounded-full border-3 border-main-900 w-15 h-15"
                                 :src="customer.customerImage" />
                         </td>
-                        <td class="text-center py-5 w-40">{{ customer.customerName }}</td>
-                        <td class="text-center py-3">{{ customer.customerEmail }}</td>
-                        <td class="text-center py-3">{{ customer.numberOfOrders }}</td>
-                        <td class="text-center py-3 px-2">${{ orderStore.totalPrice }}</td>
-                        <td class="text-center py-3 px-2 md:py-3 md:px-2 flex justify-center">
-                            <div class="rounded-full px-2 py-3 w-50  md:px-4 md:py-2 flex justify-center gap-2 cursor-pointer" :class="{
+                        <td class="text-center py-3 px-5">{{ customer.customerName }}</td>
+                        <td class="text-center py-3 px-5">{{ customer.customerEmail }}</td>
+                        <td class="text-center py-3 px-5">{{ customer.numberOfOrders }}</td>
+                        <td class="text-center py-3 px-5">${{ orderStore.totalPrice }}</td>
+                        <td class="text-center">
+                            <div class="rounded-full px-2 py-3 w-50  md:px-1 md:py-2 flex justify-center gap-2 cursor-pointer" :class="{
                                 'bg-[#FFB753]': customer.tags[0] === 'premium',
                                 'bg-[#ADC2FF]': customer.tags[0] === 'new customer',
                                 'bg-[#D981FF]': customer.tags[0] === 'inactive customer',
@@ -125,7 +125,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useOrderStore } from '../stores/orderDetailsStore';
+import { useOrdersDetailsStore } from '../stores/orderDetailsStore';
 
 const props = defineProps({
     customers: Array,
@@ -164,5 +164,5 @@ const updateTag = (customer, tag) => {
     openTagsForCustomer.value[customer.customerId] = false;
 };
 
-const orderStore = useOrderStore();
+const orderStore = useOrdersDetailsStore();
 </script>

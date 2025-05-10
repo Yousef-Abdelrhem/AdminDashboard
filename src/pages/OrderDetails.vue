@@ -12,7 +12,7 @@
                     'bg-[#9ED5DB]': orderDetails?.status === 'Processing' || orderDetails?.status === 'processing',
                     'bg-[#D981FF]': orderDetails?.status === 'Shipped' || orderDetails?.status === 'shipped' ,
                     'bg-[#48CB5C]': orderDetails?.status === 'Delivered' || orderDetails?.status === 'paid' ||orderDetails?.status === 'delivered' || orderDetails?.status === 'Paid',
-                    'bg-[#FF7C77]': orderDetails?.status === 'Cancelled' || orderDetails?.status === 'cancelled'
+                    'bg-[#FF7C77]': orderDetails?.status === 'Cancelled' || orderDetails?.status === 'cancelled' ||orderDetails?.status === 'canceled'
                 }" class="border-0 rounded-full px-8 sm:px-10 md:px-12 py-1.5 text-white">
                     {{ uppercaseWord(orderDetails?.status) }}
                 </p>
@@ -80,7 +80,7 @@
                         'text-[#9ED5DB]': orderDetails?.paymentInfo.paymentStatus === 'processing',
                         'text-[#D981FF]': orderDetails?.paymentInfo.paymentStatus === 'shipped',
                         'text-[#48CB5C]': orderDetails?.paymentInfo.paymentStatus === 'delivered' || orderDetails?.paymentInfo.paymentStatus === 'paid',
-                        'text-[#FF7C77]': orderDetails?.paymentInfo.paymentStatus === 'cancelled'
+                        'text-[#FF7C77]': orderDetails?.paymentInfo.paymentStatus === 'cancelled' || orderDetails?.paymentInfo.paymentStatus === 'canceled'
                     }" class="font-bold text-sm sm:text-lg">
                         {{ uppercaseWord(orderDetails?.paymentInfo.paymentStatus) }}
                     </p>
@@ -131,10 +131,10 @@
 import { ref, onMounted } from 'vue';
 import Avatar from '../components/Avatar.vue';
 import { getAllOrderDetails } from '../services/OrderDetailsService';
-import { useOrderStore } from '../stores/orderDetailsStore';
+import { useOrdersDetailsStore } from '../stores/orderDetailsStore';
 
 const orderDetails = ref(null);
-const orderStore = useOrderStore();
+const orderStore = useOrdersDetailsStore();
 
 function truncatedDescription(description) {
     if (!description) return '';
@@ -147,14 +147,20 @@ function uppercaseWord(word) {
   if (!word) return '';
   return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
 }
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const orderId = route.params.id;
+
 
 onMounted(async () => {
-    try {
-        const response = await getAllOrderDetails();
-        orderDetails.value = response.orders[0]; 
-        orderStore.setTotalPrice(orderDetails.value.totalPrice); 
-    } catch (error) {
-        console.error('Error fetching order details:', error);
-    }
+  try {
+    const response = await getAllOrderDetails();
+    const order = response.orders.find(o => o._id === orderId);
+    orderDetails.value = order;
+    orderStore.setTotalPrice(order?.totalPrice ?? 0);
+  } catch (error) {
+    console.error('Error fetching order details:', error);
+  }
 });
 </script>
