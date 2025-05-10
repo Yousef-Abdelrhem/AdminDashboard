@@ -7,6 +7,7 @@ import SideBar from "./components/SideBar.vue";
 import ProductManagement from "./pages/ProductManagement.vue";
 import OrderDetails from "./pages/OrderDetails.vue";
 import OrderManagement from "./pages/OrderManagement.vue";
+import CustomerManagement from "./pages/CustomerManagement.vue";
 
 
 const routes = [
@@ -25,7 +26,7 @@ const routes = [
       { path: "", component: Home },
       { path: "product-management", component: ProductManagement },
       { path: "order-management", component: OrderManagement },
-      { path: "customer-management", component: Home },
+      { path: "customer-management", component: CustomerManagement },
       { path: "store-configuration", component: Home },
       { path: "translation-management", component: Home },
       { path: "currency-management", component: OrderDetails },

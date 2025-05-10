@@ -1,64 +1,61 @@
 <template>
     <div class="rounded-lg border border-gray-200 overflow-auto">
-        <div v-if="paginatedProducts && paginatedProducts.length > 0">
+        <div v-if="paginatedCustomers && paginatedCustomers.length > 0">
             <table class="w-280">
                 <thead>
                     <tr class="text-gray-800">
-                        <th class="py-5 px-2">Product Id</th>
-                        <th class="py-5 px-2">Product Image</th>
-                        <th class="py-5 px-2">Product Name</th>
-                        <th class="py-5 px-2">Description</th>
-                        <th class="py-5 px-2">Price</th>
-                        <th class="py-5 px-2">In Stock</th>
-                        <th class="py-5 px-2">Category</th>
+                        <th class="py-5 px-4 text-md w-20">Id</th>
+                        <th class="py-5 px-2 w-40">Customer Image</th>
+                        <th class="py-5 px-2 w-30">Customer Name</th>
+                        <th class="py-5 px-2">Customer Email</th>
+                        <th class="py-5 px-2 w-30">No.of Order</th>
+                        <th class="py-5 px-2">Total</th>
+                        <th class="py-5 px-2 ">Tags</th>
                         <th class="py-5 px-2">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(product, index) in paginatedProducts" :key="product.productId"
+                    <tr v-for="(customer, index) in paginatedCustomers" :key="customer.customerId"
                         :class="{ 'bg-[#F1D6B7]': index % 2 === 0 }">
-                        <td class="text-center py-3">
-                            <input type="checkbox" :value="product.productId"
-                                :checked="props.selectedProducts.includes(product.productId)"
-                                @change="handleCheckboxChange(product.productId)" class="mr-2 accent-main-900" />
-                            {{ product.productId }}
+                        <td class="text-center py-3 px-4 text-md">
+                            {{ customer.customerId }}
                         </td>
                         <td class="py-3 px-2 flex justify-center items-center">
                             <img class="rounded-full border-3 border-main-900 w-15 h-15"
-                                :src="product.productImages && product.productImages.length > 0 ? product.productImages[0] : 'default-image-url'" />
+                                :src="customer.customerImage" />
                         </td>
-                        <td class="text-center py-3 px-2">{{ product.name }}</td>
-                        <td class="text-center py-3 px-2">{{ truncatedDescription(product.description) }}</td>
-                        <td class="text-center py-3 px-2">{{ product.price }}</td>
-                        <td class="text-center py-3 px-2">{{ product.inStock }}</td>
-                        <td class="text-center py-3 px-2">{{ product.category }}</td>
+                        <td class="text-center py-5 w-40">{{ customer.customerName }}</td>
+                        <td class="text-center py-3">{{ customer.customerEmail }}</td>
+                        <td class="text-center py-3">{{ customer.numberOfOrders }}</td>
+                        <td class="text-center py-3 px-2">${{ orderStore.totalPrice }}</td>
+                        <td class="text-center py-3 px-2 md:py-3 md:px-2 flex justify-center">
+                            <div class="rounded-full px-2 py-3 w-50  md:px-4 md:py-2 flex justify-center gap-2 cursor-pointer" :class="{
+                                'bg-[#FFB753]': customer.tags[0] === 'premium',
+                                'bg-[#ADC2FF]': customer.tags[0] === 'new customer',
+                                'bg-[#D981FF]': customer.tags[0] === 'inactive customer',
+                                'bg-[#67FF76]': customer.tags[0] === 'frequent buyer'
+                            }" @click="toggleTags(customer)">
+                                <p>{{ customer.tags[0] }}</p>
+                                <img src="../assets/icons/Vector.svg" alt="">
+                            </div>
+
+                            <div v-if="openTagsForCustomer[customer.customerId]"
+                                class="absolute bg-white shadow-lg rounded-lg w-48 p-2 mt-2">
+                                <div v-for="tag in tagsList" :key="tag" class="p-2 cursor-pointer hover:bg-gray-100"
+                                    @click="updateTag(customer, tag)">
+                                    {{ tag }}
+                                </div>
+                            </div>
+                        </td>
                         <td class="text-center py-3 px-2 relative">
                             <a class="cursor-pointer" @click.prevent="toggleMenu(index)">...</a>
                             <div v-if="openMenuIndex === index"
                                 class="absolute right-2 z-10 mt-2 w-36 rounded-lg border-1 border-main-900 bg-white shadow-md"
                                 @click.self="closeModal">
                                 <ul class="text-sm">
-                                    <li @click="handleAction('edit', product)" :class="[
-                                        'flex gap-3 px-2 py-2 cursor-pointer text-gray-500 hover:text-main-900 hover:rounded-t-lg',
-                                        activeAction === 'edit' && activeProductId === product.productId ? 'text-main-900' : ''
-                                    ]">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
-                                            height="24" fill="none">
-                                            <path
-                                                d="M16.4249 4.60509L17.4149 3.6151C18.2351 2.79497 19.5648 2.79497 20.3849 3.6151C21.205 4.43524 21.205 5.76493 20.3849 6.58507L19.3949 7.57506M16.4249 4.60509L9.76558 11.2644C9.25807 11.772 8.89804 12.4078 8.72397 13.1041L8 16L10.8959 15.276C11.5922 15.102 12.228 14.7419 12.7356 14.2344L19.3949 7.57506M16.4249 4.60509L19.3949 7.57506"
-                                                stroke="currentColor" stroke-width="1.5" stroke-linejoin="round">
-                                            </path>
-                                            <path
-                                                d="M18.9999 13.5C18.9999 16.7875 18.9999 18.4312 18.092 19.5376C17.9258 19.7401 17.7401 19.9258 17.5375 20.092C16.4312 21 14.7874 21 11.4999 21H11C7.22876 21 5.34316 21 4.17159 19.8284C3.00003 18.6569 3 16.7712 3 13V12.5C3 9.21252 3 7.56879 3.90794 6.46244C4.07417 6.2599 4.2599 6.07417 4.46244 5.90794C5.56879 5 7.21252 5 10.5 5"
-                                                stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                                                stroke-linejoin="round"></path>
-                                        </svg>
-                                        <p class="flex">Edit</p>
-                                    </li>
-                                    <hr class="w-30 ml-2 text-gray-400">
-                                    <li @click="handleAction('view', product)" :class="[
+                                    <li @click="handleAction('view', customer)" :class="[
                                         'flex gap-3 px-2 py-2 cursor-pointer text-gray-500 hover:text-main-900 ',
-                                        activeAction === 'view' && activeProductId
+                                        activeAction === 'view' && activeCustomerId
                                     ]">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
                                             height="24" fill="none">
@@ -72,9 +69,9 @@
                                         <p class="flex">View Details</p>
                                     </li>
                                     <hr class="w-30 ml-2 text-gray-400">
-                                    <li @click="handleAction('delete', product)" :class="[
+                                    <li @click="handleAction('delete', customer)" :class="[
                                         'flex gap-3 px-2 py-2 cursor-pointer text-gray-500 hover:text-main-900 hover:rounded-b-lg',
-                                        activeAction === 'delete' && activeProductId === product.productId ? 'text-main-900' : ''
+                                        activeAction === 'delete' && activeCustomerId === product.customerId ? 'text-main-900' : ''
                                     ]">
                                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24"
                                             height="24" fill="none">
@@ -127,14 +124,16 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { useOrderStore } from '../stores/orderDetailsStore';
 
 const props = defineProps({
-    products: Array,
-    selectedProducts: Array,
+    customers: Array,
+    selectedCustomers: Array,
     currentPage: Number,
     itemsPerPage: Number,
     openMenuIndex: Number,
-    paginatedProducts: Array,
+    paginatedCustomers: Array,
     totalPages: Number,
     activeAction: String,
     handleAction: Function,
@@ -144,22 +143,26 @@ const props = defineProps({
     changePage: Function,
 });
 
-const emit = defineEmits(['update:selectedProducts', 'delete-selected']);
+const emit = defineEmits(['update:selectedCustomers', 'delete-selected']);
 
-function handleCheckboxChange(productId) {
-    const index = props.selectedProducts.indexOf(productId);
-    if (index > -1) {
-        props.selectedProducts.splice(index, 1);
-    } else {
-        props.selectedProducts.push(productId);
-    }
-}
+const openTagsForCustomer = ref({});
 
-const truncatedDescription = (description) => {
-    if (!description) return '';
-    const sentences = description.split(' ').map(sentence => sentence.trim()).filter(Boolean);
-    const firstFourSentences = sentences.splice(0, 3).join(' ');
-    return firstFourSentences + (sentences.length > 3 ? '...' : '');
+const tagsList = [
+    'premium',
+    'new customer',
+    'inactive customer',
+    'frequent buyer'
+];
+
+const toggleTags = (customer) => {
+    const customerId = customer.customerId;
+    openTagsForCustomer.value[customerId] = !openTagsForCustomer.value[customerId];
 };
 
+const updateTag = (customer, tag) => {
+    customer.tags[0] = tag;
+    openTagsForCustomer.value[customer.customerId] = false;
+};
+
+const orderStore = useOrderStore();
 </script>
