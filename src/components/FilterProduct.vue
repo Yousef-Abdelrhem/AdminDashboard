@@ -39,12 +39,12 @@
                     </label>
 
                     <div class="flex justify-between items-center mt-1">
-                        <input type="range" class="w-full accent-main-900" min="200" step="10" max="600"
+                        <input type="range" class="w-full accent-main-900" min="50" step="10" max="600"
                             v-model="filters.price" :disabled="!filters.priceEnabled" />
                     </div>
 
                     <div class="flex justify-between text-sm text-gray-600 mt-1 px-1">
-                        <span>$200</span>
+                        <span>$50</span>
                         <span>$600</span>
                     </div>
                 </div>
@@ -88,7 +88,7 @@ export default {
                 nameEnabled: false,
                 name: '',
                 priceEnabled: false,
-                price: 200,
+                price: 50,
                 categoryEnabled: false,
                 category: '',
             }
