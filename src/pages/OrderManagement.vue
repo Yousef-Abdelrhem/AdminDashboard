@@ -70,7 +70,7 @@ import FilterProduct from "../components/FilterProduct.vue";
 import ProductTable from "../components/ProductTable.vue";
 import SearchBar from "../components/SearchBar.vue";
 import ViewDetails from "../components/ViewDetails.vue";
-import OrderTable from "../components/OrdersTable.vue";
+import OrderTable from "../components/orderstable.vue";
 import { ref, computed, reactive, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import {

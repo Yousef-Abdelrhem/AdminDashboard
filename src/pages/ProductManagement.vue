@@ -185,28 +185,30 @@ const activeProductId = ref(null);
 const showViewModal = ref(false);
 const viewedProduct = ref({});
 
-// function handleAction(action, product) {
-//   activeAction.value = action;
-//   activeProductId.value = product.productId;
 
-//   console.log(`Action: ${action} on`, product);
+function handleAction(action, product) {
+  activeAction.value = action;
+  activeProductId.value = product.productId;
 
-//   if (action === "edit") {
-//     //edit
-//   } else if (action === "view") {
-//     viewedProduct.value = product;
-//     showViewModal.value = true;
-//   } else {
-//     allProducts.value = allProducts.value.filter(
-//       (p) => p.productId !== product.productId,
-//     );
-//     products.value = products.value.filter(
-//       (p) => p.productId !== product.productId,
-//     );
-//   }
+  console.log(`Action: ${action} on`, product);
 
-//   openMenuIndex.value = null;
-// }
+  if (action === "edit") {
+    router.push({ name: 'EditProduct', params: { id: product._id } });
+  } else if (action === "view") {
+    viewedProduct.value = product;
+    showViewModal.value = true;
+  } else {
+    allProducts.value = allProducts.value.filter(
+      (p) => p.productId !== product.productId,
+    );
+    products.value = products.value.filter(
+      (p) => p.productId !== product.productId,
+    );
+  }
+
+  openMenuIndex.value = null;
+}
+
 
 function deleteSelected() {
   if (selectedProducts.value.length === 0) {
