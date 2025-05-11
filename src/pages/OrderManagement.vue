@@ -138,10 +138,10 @@ function handleAction(action, product) {
   if (action === "edit") {
     //edit  
   } else if (action === "view") {
-    viewedProduct.value = product;
-    showViewModal.value = true;
-    openMenuIndex.value = null;
-    // router.push({ name: 'OrderDetails', params: { id: product._id } });
+    // viewedProduct.value = product;
+    // showViewModal.value = true;
+    // openMenuIndex.value = null;
+    router.push({ name: 'OrderDetails', params: { id: product._id } });
 
   } else if (action === "delete") {
     orderStore.deleteOrder(product.orderId);
