@@ -1,7 +1,10 @@
-<script setup type='ts'>
-import { ref } from "vue";
+<script setup>
+import { ref, defineEmits } from "vue";
 const imageFile = ref(null);
 const imageURL = ref(null);
+
+// Define emits to communicate with parent component
+const emit = defineEmits(['file-selected']);
 
 function uploadImage(e) {
   const file = e.target.files[0];
@@ -15,14 +18,17 @@ function uploadImage(e) {
 
 function deleteImage() {
   imageURL.value = null;
+  imageFile.value = null;
+  emit('file-selected', null);
 }
 
-const emit = defineEmits(['upload']);
-function onFileSelected(e) {
-  const file = e.target.files[0];
-  emit('upload', file);
+function handleChange(e) {
+  uploadImage(e);
+  // Emit the selected file to parent component instead of calling undefined function
+  if (e.target.files[0]) {
+    emit('file-selected', e.target.files[0]);
+  }
 }
-
 </script>
 <template>
   <div
@@ -32,8 +38,8 @@ function onFileSelected(e) {
       type="file"
       class="absolute z-0 h-full w-full opacity-0"
       accept="image/*"
-      @change="uploadImage"
-    />
+      @change="handleChange"
+      />
     <!-- image uploaded -->
     <img
       v-if="imageURL"

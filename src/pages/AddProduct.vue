@@ -16,45 +16,54 @@ const category = ref('');
 const images = ref<File[]>([]);
 const error = ref<string | null>(null);
 
-// Handle image uploads
 function handleImageUpload(file: File, index: number) {
   images.value[index] = file;
+  console.log(images.value[0]);
+  console.log('fired');
+
 }
 
-// Submit the product
+// Handle image uploads
 async function submitProduct() {
   try {
-    error.value = null;
-
     const formData = new FormData();
+
+    // These values match your Postman fields
     formData.append('name', name.value);
     formData.append('description', description.value);
     formData.append('price', price.value);
-    formData.append('inStock', inStock.value);
-    formData.append('category', category.value);
+    formData.append('inStock', '10');
+    formData.append('category', 'Bags');
+    formData.append('images', images.value[0]);
+    // images.value
+    //   .filter(Boolean)
+    //   .forEach((file) => formData.append('images', file));
 
-    images.value
+      images.value
       .filter(Boolean)
-      .forEach((file) => formData.append('images', file));
-    await axios.post(
-      'https://admin-dashboard-gilt-omega.vercel.app/api/products/',
-      formData,
-      {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      }
-    );
-    alert('Product added successfully!');
-  } catch (e: any) {
-    error.value = e.response?.data?.message || 'Failed to add product';
-    alert(error.value);
+      .forEach((file) => formData.append('images', file)); // Note: field name is 'images'
+
+    // Optional: Debugging
+    formData.forEach((val, key) => {
+      console.log(`${key}:`, val);
+    });
+
+    // Send request
+    await axios.post('https://admin-dashboard-gilt-omega.vercel.app/api/products/', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
+    alert('Product submitted successfully!');
+  } catch (err: any) {
+    alert(err.response?.data?.message || 'Failed to submit product.');
   }
 }
+
 </script>
 
 <template>
-
   <div class="mb-10 pr-2 pl-2">
     <div class="mt-2 mb-3 flex justify-end gap-1 lg:mt-10 lg:gap-10">
       <Avatar />
@@ -62,8 +71,8 @@ async function submitProduct() {
     <section class="w-full rounded-xl border-2 border-[#EFEFEF] p-4 pt-5 pr-4 pb-5">
       <h2 class="text-main-950 mb-6 text-2xl font-bold">Add Product</h2>
 
-      <div class="flex gap-4">
-        <div class="flex flex-col gap-5">
+      <div class="flex flex-col md:flex-row gap-4">
+        <div class="flex flex-row flex-wrap justify-center md:flex-col md:justify-start gap-3 md:gap-5">
           <AddImage @upload="(file) => handleImageUpload(file, 0)" />
           <AddImage @upload="(file) => handleImageUpload(file, 1)" />
           <AddImage @upload="(file) => handleImageUpload(file, 2)" />
@@ -123,7 +132,7 @@ async function submitProduct() {
           </fieldset>
 
           <button type="submit"
-            class="bg-main-200 hover:bg-main-300/70 flex w-[10rem] items-center justify-center gap-2 self-center rounded-xl py-3">
+            class="bg-main-200 hover:bg-main-300/70 flex w-full md:w-[10rem] items-center justify-center gap-2 self-center rounded-xl py-3">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M9 6V12M12 9H6" stroke="#763A26" stroke-width="1.5" stroke-linecap="round"
                 stroke-linejoin="round" />
