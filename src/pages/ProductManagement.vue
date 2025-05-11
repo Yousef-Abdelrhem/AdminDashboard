@@ -1,28 +1,18 @@
 <template>
   <div class="pr-2 pl-2">
-    <div
-      class="mt-2 mb-3 flex justify-end gap-1 pt-1 pr-3.5 lg:mt-10 lg:gap-10"
-    >
+    <div class="mt-2 mb-3 flex justify-end gap-1 pt-1 pr-3.5 lg:mt-10 lg:gap-10">
       <Avatar />
     </div>
 
-    <section
-      class="w-full rounded-xl border-2 border-[#EFEFEF] p-4 pt-5 pr-4 pb-5"
-    >
+    <section class="w-full rounded-xl border-2 border-[#EFEFEF] p-4 pt-5 pr-4 pb-5">
       <div class="flex justify-between">
         <h2 class="text-main-950 mb-6 text-2xl font-bold">List of Products</h2>
         <div class="flex gap-3">
-          <div
-            class="btn text-main-900 border-0 bg-[#F1D6B7] px-2 md:px-5"
-            @click="addProduct"
-          >
+          <div class="btn text-main-900 border-0 bg-[#F1D6B7] px-2 md:px-5" @click="addProduct">
             <img src="/src/assets/icons/add.svg" alt="Add product icon" />
             <p class="hidden sm:flex">Add Product</p>
           </div>
-          <div
-            class="btn text-main-900 border-0 bg-[#F1D6B7] px-2 md:px-5"
-            @click="deleteSelected"
-          >
+          <div class="btn text-main-900 border-0 bg-[#F1D6B7] px-2 md:px-5" @click="deleteSelected">
             <img src="/src/assets/icons/delete.svg" alt="Delete icon" />
             <p class="hidden sm:flex">Delete</p>
           </div>
@@ -37,27 +27,12 @@
       <div v-if="products.length === 0" class="py-4 text-center text-gray-500">
         Oops! We couldn't find any products that match your filters.
       </div>
-      <ProductTable
-        v-else
-        :products="products.length ? products : []"
-        v-model:selectedProducts="selectedProducts"
-        :currentPage="currentPage"
-        :itemsPerPage="itemsPerPage"
-        :openMenuIndex="openMenuIndex"
-        :paginatedProducts="paginatedProducts"
-        :totalPages="totalPages"
-        :handleAction="handleAction"
-        :toggleMenu="toggleMenu"
-        :prevPage="prevPage"
-        :nextPage="nextPage"
-        :changePage="changePage"
-      />
+      <ProductTable v-else :products="products.length ? products : []" v-model:selectedProducts="selectedProducts"
+        :currentPage="currentPage" :itemsPerPage="itemsPerPage" :openMenuIndex="openMenuIndex"
+        :paginatedProducts="paginatedProducts" :totalPages="totalPages" :handleAction="handleAction"
+        :toggleMenu="toggleMenu" :prevPage="prevPage" :nextPage="nextPage" :changePage="changePage" />
     </section>
-    <ViewDetails
-      v-if="showViewModal"
-      :viewedProduct="viewedProduct"
-      @close="showViewModal = false"
-    />
+    <ViewDetails v-if="showViewModal" :viewedProduct="viewedProduct" @close="showViewModal = false" />
   </div>
 </template>
 
@@ -165,7 +140,7 @@ function handleAction(action, product) {
   console.log(`Action: ${action} on`, product);
 
   if (action === "edit") {
-    //edit
+    router.push({ name: 'EditProduct', params: { id: product._id } });
   } else if (action === "view") {
     viewedProduct.value = product;
     showViewModal.value = true;

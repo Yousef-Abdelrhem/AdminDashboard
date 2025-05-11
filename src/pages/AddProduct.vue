@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useProductStore } from '../Stores/addProdunct'; // adjust path as needed
-import AddImage from "../components/AddImage.vue";
-import Avatar from "../components/Avatar.vue";
+import { useProductStore } from '../Stores/addProdunct';
+import AddImage from "../components/addimage.vue";
+import Avatar from "../components/Avatar.vue"; 
 import axios from 'axios';
 
 const productStore = useProductStore();
@@ -26,29 +26,25 @@ function handleImageUpload(file: File, index: number) {
 // Handle image uploads
 async function submitProduct() {
   try {
+    // Validate inputs
+    if (!name.value || !description.value || !price.value || !inStock.value || !category.value) {
+      alert('Please fill in all required fields.');
+      return;
+    }
+
     const formData = new FormData();
 
     // These values match your Postman fields
     formData.append('name', name.value);
     formData.append('description', description.value);
     formData.append('price', price.value);
-    formData.append('inStock', '10');
-    formData.append('category', 'Bags');
-    formData.append('images', images.value[0]);
-    // images.value
-    //   .filter(Boolean)
-    //   .forEach((file) => formData.append('images', file));
+    formData.append('inStock', inStock.value);
+    formData.append('category', category.value);
 
-      images.value
-      .filter(Boolean)
-      .forEach((file) => formData.append('images', file)); // Note: field name is 'images'
-
-    // Optional: Debugging
     formData.forEach((val, key) => {
       console.log(`${key}:`, val);
     });
 
-    // Send request
     await axios.post('https://admin-dashboard-gilt-omega.vercel.app/api/products/', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',

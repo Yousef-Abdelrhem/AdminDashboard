@@ -8,7 +8,8 @@ import ProductManagement from "./pages/ProductManagement.vue";
 import OrderDetails from "./pages/OrderDetails.vue";
 import OrderManagement from "./pages/OrderManagement.vue";
 import CustomerManagement from "./pages/CustomerManagement.vue";
-import StorageManagement from "./pages/StoreManagement.vue"
+import StorageManagement from "./pages/StoreManagement.vue";
+import EditProduct from "./pages/EditProduct.vue";
 
 const routes = [
   {
@@ -30,7 +31,11 @@ const routes = [
       { path: "store-configuration", component: StorageManagement },
       { path: "translation-management", component: Home },
       { path: "currency-management", component: OrderDetails },
-      // { path: "orders/:id", name: "OrderDetails", component: OrderDetails, props: true },
+      {
+        path: '/editProduct/:id',
+        name: 'EditProduct', // Changed the name to 'EditProduct'
+        component: EditProduct
+      },
       {
         path: '/orders/:id',
         name: 'OrderDetails',
