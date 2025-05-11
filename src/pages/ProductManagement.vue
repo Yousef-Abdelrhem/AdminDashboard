@@ -97,7 +97,7 @@ async function handleAction(action, product) {
   console.log(`Action: ${action} on`, product);
 
   if (action === "edit") {
-    // edit 
+        router.push({ name: 'EditProduct', params: { id: product._id } });
   } else if (action === "view") {
     viewedProduct.value = product;
     showViewModal.value = true;
@@ -186,28 +186,28 @@ const showViewModal = ref(false);
 const viewedProduct = ref({});
 
 
-function handleAction(action, product) {
-  activeAction.value = action;
-  activeProductId.value = product.productId;
+// function handleAction(action, product) {
+//   activeAction.value = action;
+//   activeProductId.value = product.productId;
 
-  console.log(`Action: ${action} on`, product);
+//   console.log(`Action: ${action} on`, product);
 
-  if (action === "edit") {
-    router.push({ name: 'EditProduct', params: { id: product._id } });
-  } else if (action === "view") {
-    viewedProduct.value = product;
-    showViewModal.value = true;
-  } else {
-    allProducts.value = allProducts.value.filter(
-      (p) => p.productId !== product.productId,
-    );
-    products.value = products.value.filter(
-      (p) => p.productId !== product.productId,
-    );
-  }
+//   if (action === "edit") {
+//     router.push({ name: 'EditProduct', params: { id: product._id } });
+//   } else if (action === "view") {
+//     viewedProduct.value = product;
+//     showViewModal.value = true;
+//   } else {
+//     allProducts.value = allProducts.value.filter(
+//       (p) => p.productId !== product.productId,
+//     );
+//     products.value = products.value.filter(
+//       (p) => p.productId !== product.productId,
+//     );
+//   }
 
-  openMenuIndex.value = null;
-}
+//   openMenuIndex.value = null;
+// }
 
 
 function deleteSelected() {
