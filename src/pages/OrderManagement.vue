@@ -48,13 +48,14 @@
         </div>
       </div>
 
-      <div v-if="orderStore.orders.length === 0" class="py-4 text-center text-gray-500">
-        Oops! We couldn't find any products that match your filters.
+      <div v-if="filteredOrders.length === 0" class="py-4 text-center text-gray-500">
+        Oops! We couldn't find any orders that match your filters.
       </div>
       <OrderTable v-else v-model:selectedProducts="selectedProducts" :currentPage="currentPage"
         :itemsPerPage="itemsPerPage" :openMenuIndex="openMenuIndex" :paginatedProducts="paginatedProducts"
         :totalPages="totalPages" :handleAction="handleAction" :toggleMenu="toggleMenu" :prevPage="prevPage"
         :nextPage="nextPage" :changePage="changePage" />
+
     </section>
     <ViewDetails v-if="showViewModal" :viewedProduct="viewedProduct" @close="showViewModal = false" />
   </div>
@@ -67,7 +68,7 @@ import ProductTable from "../components/ProductTable.vue";
 import SearchBar from "../components/SearchBar.vue";
 import ViewDetails from "../components/ViewDetails.vue";
 import OrderTable from "../components/OrdersTable.vue";
-import { ref, computed, reactive, onMounted } from "vue";
+import { ref, computed, reactive, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import {
   Listbox,
@@ -76,6 +77,10 @@ import {
   ListboxOption,
 } from "@headlessui/vue";
 import { useOrderStore } from "../Stores/OrderStore";
+import { useRoute } from 'vue-router';
+
+const route = useRoute();
+const orderId = route.params.id;
 
 const people = [
   { id: 1, name: "Order Date (Newest First)" },
@@ -85,6 +90,7 @@ const people = [
   { id: 5, name: "Status (A-Z)" },
   { id: 6, name: "Status (Z-A)" },
 ];
+const searchQuery = ref("");
 
 const orderStore = useOrderStore();
 const selectedPerson = ref(people[0]);
@@ -96,6 +102,22 @@ const currentPage = ref(1);
 const itemsPerPage = 9;
 
 const openMenuIndex = ref(null);
+
+const allOrders = ref([]);
+const filteredOrders = ref([]);
+
+
+const filters = reactive({
+  idEnabled: false,
+  id: "",
+  nameEnabled: false,
+  name: "",
+  priceEnabled: false,
+  price: 200,
+  categoryEnabled: false,
+  category: "",
+});
+
 
 function toggleMenu(index) {
   openMenuIndex.value = openMenuIndex.value === index ? null : index;
@@ -114,22 +136,49 @@ function handleAction(action, product) {
   console.log(`Action: ${action} on`, product);
 
   if (action === "edit") {
-    //edit
+    //edit  
   } else if (action === "view") {
     viewedProduct.value = product;
     showViewModal.value = true;
     openMenuIndex.value = null;
+    // router.push({ name: 'OrderDetails', params: { id: product._id } });
+
   } else if (action === "delete") {
-    // Fix: Use product instead of order
     orderStore.deleteOrder(product.orderId);
     openMenuIndex.value = null;
   }
 }
 
+
 function handleFilters(filters) {
   console.log("Filters applied:", filters);
-  // Implement filtering logic here
+
+  const filtered = allOrders.value.filter((order) => {
+    let isValid = true;
+
+    if (filters.idEnabled && filters.id !== "") {
+      isValid = isValid && order.orderId.toString().includes(filters.id.toString());
+    }
+
+    if (filters.nameEnabled && filters.name !== "") {
+      isValid = isValid && order.customerName?.toLowerCase().includes(filters.name.toLowerCase());
+    }
+
+    if (filters.priceEnabled) {
+      const numericPrice = Number(order.totalPrice);
+      isValid = isValid && numericPrice <= filters.price;
+    }
+
+    if (filters.categoryEnabled && filters.category !== "") {
+      isValid = isValid && order.status === filters.category;
+    }
+
+    return isValid;
+  });
+
+  filteredOrders.value = filtered;
 }
+
 
 function deleteSelected() {
   if (selectedProducts.value.length === 0) {
@@ -147,14 +196,14 @@ function deleteSelected() {
 }
 
 const totalPages = computed(() =>
-  Math.ceil(orderStore.orders.length / itemsPerPage),
+  Math.ceil((filteredOrders.value.length || 0) / itemsPerPage),
 );
 
 const paginatedProducts = computed(() =>
-  orderStore.orders.slice(
+  filteredOrders.value.slice(
     (currentPage.value - 1) * itemsPerPage,
     currentPage.value * itemsPerPage,
-  ),
+  )
 );
 
 const changePage = (page) => {
@@ -175,10 +224,35 @@ const areAllSelected = computed(() => {
   );
 });
 
-onMounted(() => {
-  orderStore.fetchOrders();
+onMounted(async () => {
+  // Make sure the store is properly initialized
+  const orderStoreInstance = useOrderStore();
+  
+  try {
+    // Check if fetchOrders exists and is a function
+    if (typeof orderStoreInstance.fetchOrders === 'function') {
+      await orderStoreInstance.fetchOrders();
+      
+      // Make sure orders exist before copying them
+      if (orderStoreInstance.orders && Array.isArray(orderStoreInstance.orders)) {
+        allOrders.value = [...orderStoreInstance.orders];
+        filteredOrders.value = [...orderStoreInstance.orders];
+      } else {
+        console.error('Orders is not an array:', orderStoreInstance.orders);
+        allOrders.value = [];
+        filteredOrders.value = [];
+      }
+    } else {
+      console.error('fetchOrders is not a function');
+    }
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    allOrders.value = [];
+    filteredOrders.value = [];
+  }
 });
 </script>
+
 <style>
 .select-bg {
   background-color: #f1d6b7 !important;

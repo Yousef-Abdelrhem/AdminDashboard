@@ -9,7 +9,6 @@ import OrderDetails from "./pages/OrderDetails.vue";
 import OrderManagement from "./pages/OrderManagement.vue";
 import CustomerManagement from "./pages/CustomerManagement.vue";
 
-
 const routes = [
   {
     path: "/signup",
@@ -30,6 +29,7 @@ const routes = [
       { path: "store-configuration", component: Home },
       { path: "translation-management", component: Home },
       { path: "currency-management", component: OrderDetails },
+      { path: "orders/:id", name: "OrderDetails", component: OrderDetails, props: true },
       { path: "product-management/add-product", component: AddProduct },
     ],
   },

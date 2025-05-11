@@ -39,7 +39,7 @@ export const useOrderStore = defineStore("order", () => {
       console.log(res);
 
       orders.value = orders.value.filter((order) => order.orderId !== orderID);
-
+      console.log(orders.value);
       return true;
     } catch (err) {
       console.log(err);
