@@ -129,7 +129,7 @@ function handleFilters(filters) {
     }
 
     if (filters.priceEnabled) {
-      const numericPrice = Number(product.price.replace("$", ""));
+      const numericPrice = Number(product.price);
       isValid = isValid && numericPrice <= filters.price;
     }
 
