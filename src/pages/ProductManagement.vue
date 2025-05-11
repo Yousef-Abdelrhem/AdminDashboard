@@ -106,7 +106,7 @@ const filters = reactive({
   nameEnabled: false,
   name: "",
   priceEnabled: false,
-  price: 200,
+  price: 50,
   categoryEnabled: false,
   category: "",
 });
