@@ -1,4 +1,4 @@
-<script setup>
+<script setup type='ts'>
 import { ref } from "vue";
 const imageFile = ref(null);
 const imageURL = ref(null);
@@ -16,6 +16,13 @@ function uploadImage(e) {
 function deleteImage() {
   imageURL.value = null;
 }
+
+const emit = defineEmits(['upload']);
+function onFileSelected(e) {
+  const file = e.target.files[0];
+  emit('upload', file);
+}
+
 </script>
 <template>
   <div
