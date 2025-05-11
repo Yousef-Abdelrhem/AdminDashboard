@@ -5,18 +5,23 @@ import { API, Order } from "../Interfaces/Api";
 export const useOrderStore = defineStore("order", () => {
   const orders = ref<Order[]>([]);
   const loading = ref(false);
-  async function fetchOrders() {
+  async function fetchOrders(query = "") {
     try {
       loading.value = true;
-      console.log(`${API.base_url}${API.ordersEndpoint}`);
-      const res = await axios.get(`${API.base_url}${API.ordersEndpoint}`);
+      const url = query
+        ? `${API.base_url}${API.ordersEndpoint}?${query}`
+        : `${API.base_url}${API.ordersEndpoint}`;
+  
+      console.log("Fetching orders from:", url);
+      const res = await axios.get(url);
       orders.value = res.data.orders;
-      console.log(res.data.orders);
     } catch (err) {
       console.log(err);
+    } finally {
+      loading.value = false;
     }
-    loading.value = false;
   }
+  
 
   async function updateOrdereStatus(orderID: number, newStatus: string) {
     console.log(orderID, newStatus);
