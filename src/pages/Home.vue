@@ -21,7 +21,6 @@ const cards = ref([
   { title: "Number Of New Customer", value: "0", key: "newCustomers" },
   { title: "Number of New Products", value: "0", key: "newProducts" },
   { title: "Number Of New Orders", value: "0", key: "newOrders" },
-  { title: "Orders", value: "0", key: "numberOfOrders" }
 ]);
 
 const searchTerm = ref("");
@@ -76,7 +75,7 @@ const filteredCards = computed(() => {
         <HomeCard class="transition-all duration-300 hover:scale-105" title="Number Of New Orders" />
         <HomeCard class="transition-all duration-300 hover:scale-105" title="Orders" />
       </div> -->
-      <div class="grid justify-center md gap-5 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4">
+      <div class="grid justify-center md gap-5 lg:grid-cols-2 xl:grid-cols-3 [1750px]:grid-cols-4 place-items-center">
         <HomeCard v-for="(card, index) in filteredCards" :key="index" :title="card.title" :value="card.value"
           class="transition-all duration-300 hover:scale-105" />
       </div>
