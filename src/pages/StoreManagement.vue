@@ -1,10 +1,24 @@
 <script setup>
 import { ref, onMounted, onBeforeUnmount } from "vue";
 import Avatar from "../components/Avatar.vue";
+import { getAllstore } from "../services/storeService";
 
 const currentPage = ref(1);
 const totalPages = ref(10);
 const cost = ref(200);
+
+const shippingMethods = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await getAllstore();
+    console.log(response.data.shippingMethods)
+    console.log(response)
+    shippingMethods.value = response.data.shippingMethods;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+});
 
 function getVisiblePages() {
   const pages = [];
@@ -48,11 +62,6 @@ const toggleEdit = () => {
   isEditable.value = !isEditable.value;
 };
 
-const shippingMethods = ref([
-  { name: "Standard Shipping", cost: "$5", delivery: "3-5", active: true },
-  { name: "Express Shipping", cost: "$10", delivery: "1-2", active: false },
-  { name: "Store Pickup", cost: "Free", delivery: "Same Day", active: false },
-]);
 
 const users = ref([
   {
@@ -95,6 +104,7 @@ const openDropdown = (index) => {
   showDropdown.value = index === showDropdown.value ? null : index;
 };
 
+// const showDropdown = ref(null);
 const openModal = (method = null) => {
   isEditMode.value = !!method;
   if (method) {
@@ -135,9 +145,13 @@ const closeModal2 = () => {
   showModal2.value = false;
 };
 
+// const openDropdown = (index) => {
+//   showDropdown.value = index;
+// };
+
 const deleteMethod = (index) => {
+  // Delete the method (implementation here)
   shippingMethods.value.splice(index, 1);
-  showDropdown.value = null;
 };
 
 const closeDropdown = (event) => {
@@ -315,13 +329,13 @@ onBeforeUnmount(() => {
               :class="{ 'bg-[#F9D4AD]': index % 2 === 0 }"
             >
               <td class="py-3 text-center text-sm text-[#3D3D3D] sm:text-lg">
-                {{ method.name }}
+                {{ method.methodName }}
               </td>
               <td class="py-3 text-center text-sm text-[#3D3D3D] sm:text-lg">
                 {{ method.cost }}
               </td>
               <td class="py-3 text-center text-sm text-[#3D3D3D] sm:text-lg">
-                {{ method.delivery }}
+                {{ method.estimatedDeliveryMin }} - {{ method.estimatedDeliveryMax }} days
               </td>
               <td class="py-3 text-center text-sm text-[#3D3D3D] sm:text-lg">
                 <label
@@ -347,89 +361,89 @@ onBeforeUnmount(() => {
                 >
                   ⋮
                 </button>
-                <div
-                  v-if="showDropdown === index"
-                  class="dropdown-menu absolute right-0 z-40 mt-2 w-50 rounded border border-gray-200 bg-white shadow"
-                >
-                  <button
-                    @click="openModal2(method)"
-                    class="icon-wrapper group flex w-full items-center gap-2 border-b border-gray-300 px-3 py-1 text-left text-[#B0B0B0] hover:text-[#763A26]"
-                  >
-                    <div class="icon-wrapper group">
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 18 18"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        class="icon-svg transition-all duration-300"
-                      >
-                        <path
-                          d="M12.3187 3.45382L13.0612 2.71132C13.6763 2.09623 14.6736 2.09623 15.2887 2.71132C15.9037 3.32643 15.9037 4.3237 15.2887 4.9388L14.5462 5.68129M12.3187 3.45382L7.32419 8.4483C6.94355 8.829 6.67353 9.30585 6.54298 9.82807L6 12L8.17192 11.457C8.69415 11.3265 9.171 11.0564 9.5517 10.6758L14.5462 5.68129M12.3187 3.45382L14.5462 5.68129"
-                          class="icon-path"
-                          stroke="#B0B0B0"
-                          stroke-width="1.5"
-                          stroke-linejoin="round"
-                        />
-                        <path
-                          d="M14.2499 10.125C14.2499 12.5906 14.2499 13.8234 13.569 14.6532C13.4443 14.8051 13.3051 14.9443 13.1531 15.069C12.3234 15.75 11.0905 15.75 8.62492 15.75H8.25C5.42157 15.75 4.00737 15.75 3.12869 14.8713C2.25002 13.9927 2.25 12.5784 2.25 9.75V9.375C2.25 6.90939 2.25 5.67659 2.93095 4.84683C3.05563 4.69493 3.19493 4.55563 3.34683 4.43095C4.17659 3.75 5.40939 3.75 7.875 3.75"
-                          class="icon-path"
-                          stroke="#B0B0B0"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                        />
-                      </svg>
-                    </div>
-                    Edit
-                  </button>
-                  <button
-                    @click="deleteMethod(index)"
-                    class="icon-wrapper group flex w-full items-center gap-2 px-3 py-1 text-left text-[#B0B0B0] hover:text-[#763A26]"
-                  >
-                    <div class="icon-wrapper group">
-                      <svg
-                        class="icon-path"
-                        width="20"
-                        height="20"
-                        viewBox="0 0 18 18"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          class="icon-path"
-                          d="M14.625 4.125L14.1602 11.6438C14.0414 13.5648 13.9821 14.5253 13.5006 15.2159C13.2625 15.5573 12.956 15.8455 12.6005 16.062C11.8816 16.5 10.9192 16.5 8.99452 16.5C7.06734 16.5 6.10372 16.5 5.38429 16.0612C5.0286 15.8443 4.722 15.5556 4.48401 15.2136C4.00266 14.5219 3.94459 13.5601 3.82846 11.6364L3.375 4.125"
-                          stroke="#B0B0B0"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                        />
-                        <path
-                          class="icon-path"
-                          d="M2.25 4.125H15.75M12.0418 4.125L11.5298 3.0688C11.1897 2.3672 11.0196 2.01639 10.7263 1.79761C10.6612 1.74908 10.5923 1.7059 10.5203 1.66852C10.1954 1.5 9.80558 1.5 9.02588 1.5C8.2266 1.5 7.827 1.5 7.49676 1.67559C7.42357 1.71451 7.35373 1.75943 7.28797 1.80988C6.99123 2.03753 6.82547 2.40116 6.49396 3.12844L6.03969 4.125"
-                          stroke="#B0B0B0"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                        />
-                        <path
-                          class="icon-path"
-                          d="M7.125 12.375V7.875"
-                          stroke="#B0B0B0"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                        />
-                        <path
-                          class="icon-path"
-                          d="M10.875 12.375V7.875"
-                          stroke="#B0B0B0"
-                          stroke-width="1.5"
-                          stroke-linecap="round"
-                        />
-                      </svg>
-                    </div>
-                    Delete
-                  </button>
-                </div>
               </td>
+              <div
+                v-if="showDropdown === index"
+                class="dropdown-menu absolute right-20 z-40 mt-10 w-30 rounded border border-gray-200 bg-white shadow"
+              >
+                <button
+                  @click="openModal2(method, index)"
+                  class="icon-wrapper group flex w-full items-center gap-2 border-b border-gray-300 px-3 py-1 text-left text-[#B0B0B0] hover:text-[#763A26]"
+                >
+                  <div class="icon-wrapper group">
+                    <svg
+                      width="20"
+                      height="20"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      class="icon-svg transition-all duration-300"
+                    >
+                      <path
+                        d="M12.3187 3.45382L13.0612 2.71132C13.6763 2.09623 14.6736 2.09623 15.2887 2.71132C15.9037 3.32643 15.9037 4.3237 15.2887 4.9388L14.5462 5.68129M12.3187 3.45382L7.32419 8.4483C6.94355 8.829 6.67353 9.30585 6.54298 9.82807L6 12L8.17192 11.457C8.69415 11.3265 9.171 11.0564 9.5517 10.6758L14.5462 5.68129M12.3187 3.45382L14.5462 5.68129"
+                        class="icon-path"
+                        stroke="#B0B0B0"
+                        stroke-width="1.5"
+                        stroke-linejoin="round"
+                      />
+                      <path
+                        d="M14.2499 10.125C14.2499 12.5906 14.2499 13.8234 13.569 14.6532C13.4443 14.8051 13.3051 14.9443 13.1531 15.069C12.3234 15.75 11.0905 15.75 8.62492 15.75H8.25C5.42157 15.75 4.00737 15.75 3.12869 14.8713C2.25002 13.9927 2.25 12.5784 2.25 9.75V9.375C2.25 6.90939 2.25 5.67659 2.93095 4.84683C3.05563 4.69493 3.19493 4.55563 3.34683 4.43095C4.17659 3.75 5.40939 3.75 7.875 3.75"
+                        class="icon-path"
+                        stroke="#B0B0B0"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                  </div>
+                  Edit
+                </button>
+                <button
+                  @click="deleteMethod(index)"
+                  class="icon-wrapper group flex w-full items-center gap-2 px-3 py-1 text-left text-[#B0B0B0] hover:text-[#763A26]"
+                >
+                  <div class="icon-wrapper group">
+                    <svg
+                      class="icon-path"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 18 18"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        class="icon-path"
+                        d="M14.625 4.125L14.1602 11.6438C14.0414 13.5648 13.9821 14.5253 13.5006 15.2159C13.2625 15.5573 12.956 15.8455 12.6005 16.062C11.8816 16.5 10.9192 16.5 8.99452 16.5C7.06734 16.5 6.10372 16.5 5.38429 16.0612C5.0286 15.8443 4.722 15.5556 4.48401 15.2136C4.00266 14.5219 3.94459 13.5601 3.82846 11.6364L3.375 4.125"
+                        stroke="#B0B0B0"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        class="icon-path"
+                        d="M2.25 4.125H15.75M12.0418 4.125L11.5298 3.0688C11.1897 2.3672 11.0196 2.01639 10.7263 1.79761C10.6612 1.74908 10.5923 1.7059 10.5203 1.66852C10.1954 1.5 9.80558 1.5 9.02588 1.5C8.2266 1.5 7.827 1.5 7.49676 1.67559C7.42357 1.71451 7.35373 1.75943 7.28797 1.80988C6.99123 2.03753 6.82547 2.40116 6.49396 3.12844L6.03969 4.125"
+                        stroke="#B0B0B0"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        class="icon-path"
+                        d="M7.125 12.375V7.875"
+                        stroke="#B0B0B0"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                      <path
+                        class="icon-path"
+                        d="M10.875 12.375V7.875"
+                        stroke="#B0B0B0"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                      />
+                    </svg>
+                  </div>
+                  Delete
+                </button>
+              </div>
             </tr>
           </tbody>
         </table>
@@ -711,7 +725,7 @@ onBeforeUnmount(() => {
 
         <div class="mt-5 flex flex-col justify-end gap-2">
           <button
-            @click="closeModal"
+            @click="submitMethod"
             class="rounded bg-[#763A26] px-4 py-2 text-lg text-white"
           >
             {{ isEditMode ? "Save" : "Add" }}
