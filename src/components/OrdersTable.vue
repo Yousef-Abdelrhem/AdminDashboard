@@ -145,6 +145,7 @@ import { Order } from "../Interfaces/Api";
 const orderStore = useOrderStore();
 
 const props = defineProps({
+  orders: Array, // ✅ this is new
   selectedProducts: Array,
   currentPage: Number,
   itemsPerPage: Number,
@@ -171,7 +172,7 @@ const paginatedOrders = computed(() => {
   const startIndex = (props.currentPage - 1) * props.itemsPerPage;
   const endIndex = startIndex + props.itemsPerPage;
 
-  return orderStore.orders.slice(startIndex, endIndex);
+  return props.orders.slice(startIndex, endIndex);
 });
 
 // Order status management
