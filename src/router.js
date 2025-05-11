@@ -30,7 +30,12 @@ const routes = [
       { path: "store-configuration", component: StorageManagement },
       { path: "translation-management", component: Home },
       { path: "currency-management", component: OrderDetails },
-      { path: "orders/:id", name: "OrderDetails", component: OrderDetails, props: true },
+      // { path: "orders/:id", name: "OrderDetails", component: OrderDetails, props: true },
+      {
+        path: '/orders/:id',
+        name: 'OrderDetails',
+        component: OrderDetails
+      },
       { path: "product-management/add-product", component: AddProduct },
     ],
   },
