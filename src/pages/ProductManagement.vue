@@ -53,12 +53,32 @@ const allProducts = ref([]);
 const products = ref([]);
 const searchQuery = ref("");
 
+// onMounted(async () => {
+//   try {
+//     const response = await getAllProducts();
+//     // if (response && Array.isArray(response.products)) {
+//     //   allProducts.value = response.products;
+//     //   products.value = [...allProducts.value];
+
+//     if (response && Array.isArray(response.products)) {
+//       const notDeleted = response.products.filter(p => !p.isDeleted);
+//       allProducts.value = notDeleted;
+//       products.value = [...notDeleted];
+//   } else {
+//     console.error("Error: Invalid data structure.", response);
+//   }
+// } catch (error) {
+//   console.error("Error fetching products:", error);
+// }
+// });
+
 onMounted(async () => {
   try {
     const response = await getAllProducts();
     if (response && Array.isArray(response.products)) {
-      allProducts.value = response.products;
-      products.value = [...allProducts.value];
+      const notDeleted = response.products.filter((p) => !p.isDeleted);
+      allProducts.value = notDeleted;
+      products.value = [...notDeleted];
     } else {
       console.error("Error: Invalid data structure.", response);
     }
@@ -66,6 +86,38 @@ onMounted(async () => {
     console.error("Error fetching products:", error);
   }
 });
+
+
+import { deleteProduct } from "../services/productService";
+
+async function handleAction(action, product) {
+  activeAction.value = action;
+  activeProductId.value = product.productId;
+
+  console.log(`Action: ${action} on`, product);
+
+  if (action === "edit") {
+    // edit 
+  } else if (action === "view") {
+    viewedProduct.value = product;
+    showViewModal.value = true;
+  } else if (action === "delete") {
+    try {
+      await deleteProduct(product._id); 
+      allProducts.value = allProducts.value.filter(
+        (p) => p.productId !== product.productId,
+      );
+      products.value = products.value.filter(
+        (p) => p.productId !== product.productId,
+      );
+    } catch (error) {
+      console.error("Error deleting product:", error);
+      alert("Failed to delete the product. Please try again.");
+    }
+  }
+
+  openMenuIndex.value = null;
+}
 
 const currentPage = ref(1);
 const itemsPerPage = 9;
@@ -133,6 +185,7 @@ const activeProductId = ref(null);
 const showViewModal = ref(false);
 const viewedProduct = ref({});
 
+
 function handleAction(action, product) {
   activeAction.value = action;
   activeProductId.value = product.productId;
@@ -155,6 +208,7 @@ function handleAction(action, product) {
 
   openMenuIndex.value = null;
 }
+
 
 function deleteSelected() {
   if (selectedProducts.value.length === 0) {
