@@ -70,7 +70,7 @@ import FilterProduct from "../components/FilterProduct.vue";
 import ProductTable from "../components/ProductTable.vue";
 import SearchBar from "../components/SearchBar.vue";
 import ViewDetails from "../components/ViewDetails.vue";
-import OrderTable from "../components/orderstable.vue";
+import OrderTable from "../components/OrdersTable.vue";
 import { ref, computed, reactive, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import {
@@ -230,7 +230,7 @@ function handleFilters(filters) {
   });
 
   filteredOrders.value = filtered;
-  
+
   // Apply search filter after applying other filters
   if (searchQuery.value) {
     applySearchFilter();
@@ -288,7 +288,7 @@ watch(selectedPerson, async (newSelection) => {
   allOrders.value = [...orderStore.orders];
   filteredOrders.value = [...orderStore.orders];
   currentPage.value = 1;
-  
+
   // Re-apply search filter when sort changes
   if (searchQuery.value) {
     applySearchFilter();
