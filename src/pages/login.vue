@@ -1,5 +1,5 @@
 <template>
-  <div class="flex  w-screen bg-white shadow-2xl h-[41.45rem] sm:h-[43.45rem] sm:h-100vh">
+  <div class="flex  w-screen bg-white shadow-2xl h-screen">
     <!-- form left side -->
     <div class="flex h-full flex-grow-1 items-center justify-center md:w-[50%] lg:w-[20rem] xl:w-[35rem]">
       <div class="flex w-92 flex-col items-center justify-center md:w-140">
