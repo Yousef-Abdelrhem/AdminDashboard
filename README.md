@@ -3,6 +3,8 @@
 ## Overview
 A modern admin dashboard built with Vue.js, providing product management, order tracking, and customer management features. Designed for e-commerce administrators to efficiently manage their online store operations.
 
+https://github.com/user-attachments/assets/2e42c08e-bf70-4636-9230-759c9907c358
+
 ## Technology Stack
 - **Vue.js**: Frontend framework for building user interfaces.
 - **Vue Router**: For handling routing within the application.
