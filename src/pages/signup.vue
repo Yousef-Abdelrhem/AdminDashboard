@@ -173,7 +173,7 @@ export default {
         },
         validatePassword() {
             const passwordPattern =
-                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,20}$/;
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,128}$/;
             if (!this.password) {
                 this.errors.password = "Password is required";
             } else if (!passwordPattern.test(this.password)) {
