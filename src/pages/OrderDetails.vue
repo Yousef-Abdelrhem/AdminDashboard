@@ -30,8 +30,8 @@
               orderDetails?.status === 'delivered' ||
               orderDetails?.status === 'Paid',
             'bg-[#FF7C77]':
-              orderDetails?.status === 'Cancelled' ||
-              orderDetails?.status === 'cancelled' ||
+              orderDetails?.status === 'Canceled' ||
+              orderDetails?.status === 'canceled' ||
               orderDetails?.status === 'canceled',
           }"
           class="rounded-full border-0 px-8 py-1.5 text-white sm:px-10 md:px-12"
@@ -151,7 +151,7 @@
                 orderDetails?.paymentInfo.paymentStatus === 'delivered' ||
                 orderDetails?.paymentInfo.paymentStatus === 'paid',
               'text-[#FF7C77]':
-                orderDetails?.paymentInfo.paymentStatus === 'cancelled' ||
+                orderDetails?.paymentInfo.paymentStatus === 'canceled' ||
                 orderDetails?.paymentInfo.paymentStatus === 'canceled',
             }"
             class="text-sm font-bold sm:text-lg"
