@@ -21,7 +21,7 @@ export interface Product {
     description: string;
     price: number;
     productDiscount: number;
-    inStock: number;
+    quantity: number;
     category: string;
     productId: number;
     isDeleted: boolean;

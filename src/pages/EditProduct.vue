@@ -8,10 +8,10 @@ import Avatar from "../components/Avatar.vue";
 const route = useRoute();
 const productId = route.params.id as string | undefined; // gets the id from /editProduct/:id
 
-const name = ref("222");
+const name = ref("");
 const description = ref("");
 const price = ref("");
-const inStock = ref("");
+const quantity = ref("");
 const category = ref("");
 const images = ref<File[]>([]);
 const error = ref<string | null>(null);
@@ -29,7 +29,7 @@ onMounted(async () => {
   if (productId) {
     try {
       const response = await axios.get(
-        `https://admin-dashboard-gilt-omega.vercel.app/api/products/${productId}`,
+        `http://localhost:3000/api/products/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -40,7 +40,7 @@ onMounted(async () => {
       name.value = product.name;
       description.value = product.description;
       price.value = product.price;
-      inStock.value = product.inStock;
+      quantity.value = product.quantity;
       category.value = product.category;
     } catch (err) {
       console.error("Failed to load product data", err);
@@ -61,7 +61,7 @@ async function submitProduct() {
     formData.append("name", name.value);
     formData.append("description", description.value);
     formData.append("price", price.value);
-    formData.append("inStock", inStock.value);
+    formData.append("quantity", quantity.value);
     formData.append("category", category.value);
     // if (productId) formData.append('productId', productId);
 
@@ -70,8 +70,8 @@ async function submitProduct() {
     });
 
     const url = productId
-      ? `https://admin-dashboard-gilt-omega.vercel.app/api/products/${productId}`
-      : `https://admin-dashboard-gilt-omega.vercel.app/api/products/`;
+      ? `http://localhost:3000/api/products/${productId}`
+      : `http://localhost:3000/api/products/`;
 
     const method = productId ? "patch" : "post";
 
@@ -145,12 +145,16 @@ async function submitProduct() {
             </legend>
             <select
               v-model="category"
-              class="select select-lg w-full bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2215%22%20height%3D%2211%22%20viewBox%3D%220%200%2015%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M1.50006%200.333324H13.5001C13.6216%200.333705%2013.7406%200.367214%2013.8445%200.430243C13.9484%200.493272%2014.0331%200.583434%2014.0895%200.691026C14.146%200.798617%2014.172%200.919564%2014.1648%201.04085C14.1576%201.16213%2014.1175%201.27915%2014.0487%201.37932L8.04872%2010.046C7.80006%2010.4053%207.20139%2010.4053%206.95206%2010.046L0.952057%201.37932C0.882607%201.27936%200.84188%201.16228%200.8343%201.04079C0.826721%200.919311%200.85258%200.798072%200.909066%200.690252C0.965553%200.582433%201.05051%200.492155%201.1547%200.429228C1.25889%200.366302%201.37834%200.333133%201.50006%200.333324Z%22%20fill%3D%22%23763A26%22%2F%3E%3C%2Fsvg%3E')] bg-[length:15px] bg-[right_1rem_center] bg-no-repeat pr-10 text-[0.9rem] focus-within:border-0"
+              class="select select-lg w-full bg-[url('data:image/svg+xml;charset=UTF-8,%3Csvg%20width%3D%2215%22%20height%3D%2211%22%20viewBox%3D%220%200%2015%2011%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M1.50006%200.333324H13.5001C13.6216%200.333705%2013.7406%200.367214%2013.8445%200.430243C13.9484%200.493272%2014.0331%200.583434%2014.0895%200.691026C14.146%200.798617%2014.172%200.919564%2014.1648%201.04085C14.1576%201.16213%2014.1175%201.27915%2014.0487%201.37932L8.04872%2010.046C7.80006%2010.4053%207.20139%2010.4053%206.95206%2010.046L0.952057%201.37932C0.882607%201.27936%200.84188%201.16228%200.8343%201.04079C0.826721%200.919311%200.85258%200.798072%200.909066%200.690252%200.965553%200.582433%201.05051%200.492155%201.1547%200.429228%201.25889%200.366302%201.37834%200.333133%201.50006%200.333324Z%22%20fill%3D%22%23763A26%22%2F%3E%3C%2Fsvg%3E')] bg-[length:15px] bg-[right_1rem_center] bg-no-repeat pr-10 text-[0.9rem] focus-within:border-0"
             >
-              <option disabled value="">Large</option>
-              <option>Large Apple</option>
-              <option>Large Orange</option>
-              <option>Large Tomato</option>
+              <option disabled value="">Select Category</option>
+              <option>Bags</option>
+              <option>Frames</option>
+              <option>Accessories</option>
+              <option>Tablecloth</option>
+              <option>Clothes</option>
+              <option>Stocks</option>
+              <option>Gloves</option>
             </select>
           </fieldset>
 
@@ -182,7 +186,7 @@ async function submitProduct() {
               Quantity In Stock
             </legend>
             <input
-              v-model="inStock"
+              v-model="quantity"
               type="text"
               class="input w-full focus-within:border-0"
               placeholder="200"

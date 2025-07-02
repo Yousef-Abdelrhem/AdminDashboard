@@ -45,7 +45,7 @@
               {{ truncatedDescription(product.description) }}
             </td>
             <td class="px-2 py-3 text-center">{{ product.price }}</td>
-            <td class="px-2 py-3 text-center">{{ product.inStock }}</td>
+            <td class="px-2 py-3 text-center">{{ product.quantity }}</td>
             <td class="px-2 py-3 text-center">{{ product.category }}</td>
             <td class="relative px-2 py-3 text-center">
               <a class="cursor-pointer" @click.prevent="toggleMenu(index)"
