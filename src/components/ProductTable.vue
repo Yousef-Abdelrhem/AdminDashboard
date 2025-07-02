@@ -4,7 +4,7 @@
       <table class="w-full">
         <thead>
           <tr class="text-gray-800">
-            <th class="px-4 py-5 text-sm md:text-lg">Product Id</th>
+            <!-- <th class="px-4 py-5 text-sm md:text-lg">Product Id</th> -->
             <th class="px-4 py-5 text-sm md:text-lg">Product Image</th>
             <th class="px-4 py-5 text-sm md:text-lg">Product Name</th>
             <th class="px-4 py-5 text-sm md:text-lg">Description</th>
@@ -20,7 +20,7 @@
             :key="product.productId"
             :class="{ 'bg-[#F1D6B7]': index % 2 === 0 }"
           >
-            <td class="text-md px-4 py-3 text-center">
+            <!-- <td class="text-md px-4 py-3 text-center">
               <input
                 type="checkbox"
                 :value="product.productId"
@@ -29,7 +29,7 @@
                 class="accent-main-900 mr-2"
               />
               {{ product.productId }}
-            </td>
+            </td> -->
             <td class="flex items-center justify-center py-3">
               <img
                 class="border-main-900 h-15 w-15 rounded-full border-3"
