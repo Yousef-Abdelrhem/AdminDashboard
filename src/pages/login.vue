@@ -85,12 +85,10 @@
       </div>
 
       <img class="w-30 sm:w-40 md:w-65 lg:w-80 xl:w-90 2xl:w-100" src="/login.png" alt="">
-      <div class="md:flex text-xl gap-1 items-center mt-2 hidden">
+      <!-- <div class="md:flex text-xl gap-1 items-center mt-2 hidden">
         <p class="text-gray-300 md:text-sm lg:text-xl">Don't have an account?</p>
         <router-link to="/signup" class="text-white underline md:text-lg lg:text-xl">Sign Up!</router-link>
-
-
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
