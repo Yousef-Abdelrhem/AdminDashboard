@@ -7,6 +7,7 @@
             <th class="px-2 py-5">Order Id</th>
             <th class="px-2 py-5">Order Date</th>
             <th class="px-2 py-5">Order Status</th>
+            <th class="px-2 py-5">Payment Status</th>
             <th class="px-2 py-5">Customer Name</th>
             <th class="px-2 py-5">Total</th>
             <th class="px-2 py-5">Actions</th>
@@ -92,6 +93,26 @@
                     </button>
                   </div>
                 </div>
+              </div>
+            </td>
+            <td class="px-2 py-3 text-center">
+              <div class="relative inline-block">
+                <button
+                  :class="[
+                    'flex items-center justify-center rounded-full px-4 py-1 text-sm font-medium',
+                    order.paymentStatus === 'pending'
+                      ? 'bg-amber-300 text-amber-900'
+                      : order.paymentStatus === 'paid'
+                        ? 'bg-green-300 text-green-900'
+                        : order.paymentStatus === 'failed'
+                          ? 'bg-red-300 text-red-900'
+                          : order.paymentStatus === 'refunded'
+                            ? 'bg-purple-300 text-purple-900'
+                            : 'bg-gray-200 text-gray-800',
+                  ]"
+                >
+                  {{ order.paymentStatus }}
+                </button>
               </div>
             </td>
 
