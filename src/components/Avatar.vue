@@ -1,4 +1,4 @@
-<script></script>
+<script setup></script>
 <template>
   <div class="gap:3 flex items-center lg:gap-4">
     <div
