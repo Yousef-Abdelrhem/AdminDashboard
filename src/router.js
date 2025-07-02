@@ -33,16 +33,20 @@ const routes = [
       { path: "translation-management", component: Home },
       { path: "currency-management", component: OrderDetails },
       {
-        path: '/editProduct/:id',
-        name: 'EditProduct',
-        component: EditProduct
+        path: "/editProduct/:id",
+        name: "EditProduct",
+        component: EditProduct,
       },
       {
-        path: '/orders/:id',
-        name: 'OrderDetails',
-        component: OrderDetails
+        path: "/orders/:id",
+        name: "OrderDetails",
+        component: OrderDetails,
       },
       { path: "product-management/add-product", component: AddProduct },
+      {
+        path: "/:pathMatch(.*)*",
+        redirect: "/login",
+      },
     ],
   },
 ];
@@ -54,11 +58,11 @@ const router = createRouter({
 
 // Authentication guard
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = !!localStorage.getItem('token');
-  
-  if (to.matched.some(record => record.meta.requiresAuth)) {
+  const isAuthenticated = !!localStorage.getItem("token");
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
     if (!isAuthenticated) {
-      next('/signup');
+      next("/signup");
     } else {
       next();
     }
