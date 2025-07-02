@@ -97,13 +97,13 @@ async function handleAction(action, product) {
   console.log(`Action: ${action} on`, product);
 
   if (action === "edit") {
-        router.push({ name: 'EditProduct', params: { id: product._id } });
+    router.push({ name: 'EditProduct', params: { id: product._id } });
   } else if (action === "view") {
     viewedProduct.value = product;
     showViewModal.value = true;
   } else if (action === "delete") {
     try {
-      await deleteProduct(product._id); 
+      await deleteProduct(product._id);
       allProducts.value = allProducts.value.filter(
         (p) => p.productId !== product.productId,
       );
