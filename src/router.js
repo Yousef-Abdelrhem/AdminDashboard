@@ -23,6 +23,7 @@ const routes = [
   {
     path: "/",
     component: SideBar,
+    meta: { requiresAuth: true },
     children: [
       { path: "", component: Home },
       { path: "product-management", component: ProductManagement },
@@ -31,13 +32,25 @@ const routes = [
       { path: "store-configuration", component: StorageManagement },
       { path: "translation-management", component: Home },
       { path: "currency-management", component: OrderDetails },
-      {
-        path: '/orders/:id',
-        name: 'OrderDetails',
-        component: OrderDetails
-      },
-      { path: "product-management/add-product", component: AddProduct },
-      { path: "product-management/edit/:id", name: "EditProduct", component: EditProduct }
+{
+  path: "/orders/:id",
+  name: "OrderDetails",
+  component: OrderDetails,
+},
+{
+  path: "/product-management/add-product",
+  component: AddProduct,
+},
+{
+  path: "/product-management/edit/:id",
+  name: "EditProduct",
+  component: EditProduct,
+},
+{
+  path: "/:pathMatch(.*)*",
+  redirect: "/login",
+},
+
     ],
   },
 ];
@@ -45,6 +58,21 @@ const routes = [
 const router = createRouter({
   history: createWebHistory(),
   routes,
+});
+
+// Authentication guard
+router.beforeEach((to, from, next) => {
+  const isAuthenticated = !!localStorage.getItem("token");
+
+  if (to.matched.some((record) => record.meta.requiresAuth)) {
+    if (!isAuthenticated) {
+      next("/signup");
+    } else {
+      next();
+    }
+  } else {
+    next();
+  }
 });
 
 export default router;

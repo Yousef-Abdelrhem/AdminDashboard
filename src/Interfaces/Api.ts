@@ -6,7 +6,8 @@ interface Api {
 
 // Create a constant with the actual values
 export const API: Api = {
-  base_url: "https://admin-dashboard-gilt-omega.vercel.app/api",
+  // base_url: "https://admin-dashboard-gilt-omega.vercel.app/api",
+  base_url: "http://localhost:3000/api",
   ordersEndpoint: "/orders",
   customersEndpoint: "/customers",
 };
@@ -20,7 +21,7 @@ export interface Product {
     description: string;
     price: number;
     productDiscount: number;
-    inStock: number;
+    quantity: number;
     category: string;
     productId: number;
     isDeleted: boolean;

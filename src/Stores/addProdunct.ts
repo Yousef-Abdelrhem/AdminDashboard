@@ -10,7 +10,7 @@ export const useProductStore = defineStore("product", () => {
     name: string;
     description: string;
     price: string | number;
-    inStock: string | number;
+    quantity: string | number;
     category: string;
     images: File[];
   }) {
@@ -22,7 +22,7 @@ export const useProductStore = defineStore("product", () => {
       formData.append("name", productData.name);
       formData.append("description", productData.description);
       formData.append("price", productData.price.toString());
-      formData.append("inStock", productData.inStock.toString());
+      formData.append("quantity", productData.quantity.toString());
       formData.append("category", productData.category);
 
       for (const file of productData.images) {
@@ -30,7 +30,7 @@ export const useProductStore = defineStore("product", () => {
       }
 
       const response = await axios.post(
-        "https://admin-dashboard-gilt-omega.vercel.app/api/products/",
+        "http://localhost:3000/api/products/",
         formData,
         {
           headers: {

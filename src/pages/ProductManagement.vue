@@ -1,18 +1,28 @@
 <template>
   <div class="pr-2 pl-2">
-    <div class="mt-2 mb-3 flex justify-end gap-1 pt-1 pr-3.5 lg:mt-10 lg:gap-10">
+    <div
+      class="mt-2 mb-3 flex justify-end gap-1 pt-1 pr-3.5 lg:mt-10 lg:gap-10"
+    >
       <Avatar />
     </div>
 
-    <section class="w-full rounded-xl border-2 border-[#EFEFEF] p-4 pt-5 pr-4 pb-5">
+    <section
+      class="w-full rounded-xl border-2 border-[#EFEFEF] p-4 pt-5 pr-4 pb-5"
+    >
       <div class="flex justify-between">
         <h2 class="text-main-950 mb-6 text-2xl font-bold">List of Products</h2>
         <div class="flex gap-3">
-          <div class="btn text-main-900 border-0 bg-[#F1D6B7] px-2 md:px-5" @click="addProduct">
+          <div
+            class="btn text-main-900 border-0 bg-[#F1D6B7] px-2 md:px-5"
+            @click="addProduct"
+          >
             <img src="/src/assets/icons/add.svg" alt="Add product icon" />
             <p class="hidden sm:flex">Add Product</p>
           </div>
-          <div class="btn text-main-900 border-0 bg-[#F1D6B7] px-2 md:px-5" @click="deleteSelected">
+          <div
+            class="btn text-main-900 border-0 bg-[#F1D6B7] px-2 md:px-5"
+            @click="deleteSelected"
+          >
             <img src="/src/assets/icons/delete.svg" alt="Delete icon" />
             <p class="hidden sm:flex">Delete</p>
           </div>
@@ -27,10 +37,21 @@
       <div v-if="products.length === 0" class="py-4 text-center text-gray-500">
         Oops! We couldn't find any products that match your filters.
       </div>
-      <ProductTable v-else :products="products.length ? products : []" v-model:selectedProducts="selectedProducts"
-        :currentPage="currentPage" :itemsPerPage="itemsPerPage" :openMenuIndex="openMenuIndex"
-        :paginatedProducts="paginatedProducts" :totalPages="totalPages" :handleAction="handleAction"
-        :toggleMenu="toggleMenu" :prevPage="prevPage" :nextPage="nextPage" :changePage="changePage" />
+      <ProductTable
+        v-else
+        :products="products.length ? products : []"
+        v-model:selectedProducts="selectedProducts"
+        :currentPage="currentPage"
+        :itemsPerPage="itemsPerPage"
+        :openMenuIndex="openMenuIndex"
+        :paginatedProducts="paginatedProducts"
+        :totalPages="totalPages"
+        :handleAction="handleAction"
+        :toggleMenu="toggleMenu"
+        :prevPage="prevPage"
+        :nextPage="nextPage"
+        :changePage="changePage"
+      />
     </section>
     <ViewDetails v-if="showViewModal" :viewedProduct="viewedProduct" @close="showViewModal = false" />
     <DeleteConfirm
@@ -79,6 +100,8 @@ async function fetchProducts() {
 }
 
 onMounted(fetchProducts);
+import { deleteProduct } from "../services/productService";
+
 
 async function handleAction(action, product) {
   activeAction.value = action;
@@ -92,9 +115,24 @@ async function handleAction(action, product) {
     viewedProduct.value = product;
     showViewModal.value = true;
   } else if (action === "delete") {
+
     productToDelete.value = product;
     deleteMode.value = "single";
     showDeleteConfirm.value = true;
+//=======
+//    try {
+//      await deleteProduct(product._id);
+//      allProducts.value = allProducts.value.filter(
+//        (p) => p.productId !== product.productId,
+//      );
+//      products.value = products.value.filter(
+//        (p) => p.productId !== product.productId,
+//      );
+//    } catch (error) {
+//      console.error("Error deleting product:", error);
+//      alert("Failed to delete the product. Please try again.");
+//    }
+//>>>>>>> graduaction
   }
 
   openMenuIndex.value = null;
@@ -171,6 +209,24 @@ const viewedProduct = ref({});
 //   if (selectedProducts.value.length === 0) {
 //     alert("Please select at least one product to delete.");
 //     return;
+// function handleAction(action, product) {
+//   activeAction.value = action;
+//   activeProductId.value = product.productId;
+
+//   console.log(`Action: ${action} on`, product);
+
+//   if (action === "edit") {
+//     router.push({ name: 'EditProduct', params: { id: product._id } });
+//   } else if (action === "view") {
+//     viewedProduct.value = product;
+//     showViewModal.value = true;
+//   } else {
+//     allProducts.value = allProducts.value.filter(
+//       (p) => p.productId !== product.productId,
+//     );
+//     products.value = products.value.filter(
+//       (p) => p.productId !== product.productId,
+//     );
 //   }
 
 //   let failedDeletions = [];
