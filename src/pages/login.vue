@@ -61,8 +61,21 @@
 
 
         <div class="border-[#EFEFEF] border-t-2 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 mb-4"></div>
-        <button @click="validateForm"
-          class="btn bg-[#763A26] text-white text-xl border-0 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Login</button>
+        <!-- <button @click="validateForm"
+          class="btn bg-[#763A26] text-white text-xl border-0 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Login</button> -->
+        <button @click="validateForm" 
+          class="btn bg-[#763A26] text-white text-xl border-0 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 flex items-center justify-center"
+          >
+          <span v-if="!isLoading">Login</span>
+          <span v-else class="flex items-center gap-2">
+            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+              <path class="" fill="currentColor"
+                d="M4 12a8 8 0 018-8v4l4-4-4-4v4a8 8 0 100 16 8 8 0 01-8-8z" />
+            </svg>
+          </span>
+        </button>
+
         <div class="flex flex-row gap-1 text-lg items-center mt-3 md:hidden">
 
 
@@ -103,6 +116,7 @@ export default {
       password: "",
       rememberMe: false,
       passwordVisible: false,
+      isLoading: false,
       errors: {
         email: "",
         password: "",
@@ -140,6 +154,7 @@ export default {
       }
 
       if (!this.errors.email && !this.errors.password) {
+        this.isLoading = true;
         try {
           const response = await axios.post(
             "https://admin-dashboard-gilt-omega.vercel.app/api/auth/login",
@@ -174,8 +189,11 @@ export default {
             this.serverError = "Network error. Please check your connection";
           }
         }
+        finally {
+          this.isLoading = false; // ← ✅ في الآخر
+        }
       }
-    },
+    }
   },
 };
 </script>
