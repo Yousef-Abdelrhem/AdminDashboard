@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-import Signup from "./pages/signup.vue";
+// import Signup from "./pages/signup.vue";
 import Login from "./pages/login.vue";
 import Home from "./pages/Home.vue";
 import AddProduct from "./pages/AddProduct.vue";
@@ -12,10 +12,10 @@ import StorageManagement from "./pages/StoreManagement.vue";
 import EditProduct from "./pages/EditProduct.vue";
 
 const routes = [
-  {
-    path: "/signup",
-    component: Signup,
-  },
+  // {
+  //   path: "/signup",
+  //   component: Signup,
+  // },
   {
     path: "/login",
     component: Login,
@@ -32,21 +32,25 @@ const routes = [
       { path: "store-configuration", component: StorageManagement },
       { path: "translation-management", component: Home },
       { path: "currency-management", component: OrderDetails },
-      {
-        path: "/editProduct/:id",
-        name: "EditProduct",
-        component: EditProduct,
-      },
-      {
-        path: "/orders/:id",
-        name: "OrderDetails",
-        component: OrderDetails,
-      },
-      { path: "product-management/add-product", component: AddProduct },
-      {
-        path: "/:pathMatch(.*)*",
-        redirect: "/login",
-      },
+{
+  path: "/orders/:id",
+  name: "OrderDetails",
+  component: OrderDetails,
+},
+{
+  path: "/product-management/add-product",
+  component: AddProduct,
+},
+{
+  path: "/product-management/edit/:id",
+  name: "EditProduct",
+  component: EditProduct,
+},
+{
+  path: "/:pathMatch(.*)*",
+  redirect: "/login",
+},
+
     ],
   },
 ];

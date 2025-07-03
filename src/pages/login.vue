@@ -118,16 +118,23 @@
           </label>
         </div>
 
-        <div
-          class="mb-4 w-78 border-t-2 border-[#EFEFEF] sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160"
-        ></div>
-        <button
-          @click="validateForm"
-          class="btn w-78 border-0 bg-[#763A26] text-xl text-white sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160"
-        >
-          Login
+        <div class="border-[#EFEFEF] border-t-2 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 mb-4"></div>
+        <!-- <button @click="validateForm"
+          class="btn bg-[#763A26] text-white text-xl border-0 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160">Login</button> -->
+        <button @click="validateForm" 
+          class="btn bg-[#763A26] text-white text-xl border-0 w-78 sm:w-140 md:w-110 lg:w-120 xl:w-150 2xl:w-160 flex items-center justify-center"
+          >
+          <span v-if="!isLoading">Login</span>
+          <span v-else class="flex items-center gap-2">
+            <svg class="animate-spin h-5 w-5 text-white" viewBox="0 0 24 24">
+              <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" />
+              <path class="" fill="currentColor"
+                d="M4 12a8 8 0 018-8v4l4-4-4-4v4a8 8 0 100 16 8 8 0 01-8-8z" />
+            </svg>
+          </span>
         </button>
-        <div class="mt-3 flex flex-row items-center gap-1 text-lg md:hidden">
+
+        <div class="flex flex-row gap-1 text-lg items-center mt-3 md:hidden">
           <p class="text-gray-500">Don't have an account?</p>
           <router-link to="/signup" class="text-[#763A26] underline"
             >Sign Up!</router-link
@@ -151,21 +158,11 @@
         <p class="md:text-lg lg:text-2xl">Please login to your account</p>
       </div>
 
-      <img
-        class="w-30 sm:w-40 md:w-65 lg:w-80 xl:w-90 2xl:w-100"
-        src="/login.png"
-        alt=""
-      />
-      <div class="mt-2 hidden items-center gap-1 text-xl md:flex">
-        <p class="text-gray-300 md:text-sm lg:text-xl">
-          Don't have an account?
-        </p>
-        <router-link
-          to="/signup"
-          class="text-white underline md:text-lg lg:text-xl"
-          >Sign Up!</router-link
-        >
-      </div>
+      <img class="w-30 sm:w-40 md:w-65 lg:w-80 xl:w-90 2xl:w-100" src="/login.png" alt="">
+      <!-- <div class="md:flex text-xl gap-1 items-center mt-2 hidden">
+        <p class="text-gray-300 md:text-sm lg:text-xl">Don't have an account?</p>
+        <router-link to="/signup" class="text-white underline md:text-lg lg:text-xl">Sign Up!</router-link>
+      </div> -->
     </div>
   </div>
 </template>
@@ -180,6 +177,7 @@ export default {
       password: "",
       rememberMe: false,
       passwordVisible: false,
+      isLoading: false,
       errors: {
         email: "",
         password: "",
@@ -217,6 +215,7 @@ export default {
       }
 
       if (!this.errors.email && !this.errors.password) {
+        this.isLoading = true;
         try {
           const response = await axios.post(
             "http://localhost:3000/api/auth/login",
@@ -251,8 +250,11 @@ export default {
             this.serverError = "Network error. Please check your connection";
           }
         }
+        finally {
+          this.isLoading = false; // ← ✅ في الآخر
+        }
       }
-    },
+    }
   },
 };
 </script>

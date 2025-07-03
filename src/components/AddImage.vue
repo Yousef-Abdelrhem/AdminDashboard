@@ -1,62 +1,75 @@
 <script setup>
-import { ref, defineEmits } from "vue";
+import { ref, watch, defineEmits, defineProps } from "vue";
+
+const props = defineProps({
+  previewUrl: String,
+});
+
+const emit = defineEmits(["upload"]);
+
 const imageFile = ref(null);
 const imageURL = ref(null);
+const fileInput = ref(null);
 
-// Define emits to communicate with parent component
-const emit = defineEmits(['file-selected']);
+watch(
+  () => props.previewUrl,
+  (newVal) => {
+    if (newVal && !imageURL.value) {
+      imageURL.value = newVal;
+    }
+  },
+  { immediate: true }
+);
 
 function uploadImage(e) {
   const file = e.target.files[0];
   if (file) {
     imageFile.value = file;
     imageURL.value = URL.createObjectURL(file);
+    emit("upload", file);
   }
-  console.log("e.target.files", e.target.files);
-  console.log(imageURL.value);
 }
 
 function deleteImage() {
-  imageURL.value = null;
   imageFile.value = null;
-  emit('file-selected', null);
+  imageURL.value = null;
+  emit("upload", null); 
 }
 
-function handleChange(e) {
-  uploadImage(e);
-  // Emit the selected file to parent component instead of calling undefined function
-  if (e.target.files[0]) {
-    emit('file-selected', e.target.files[0]);
-  }
+function triggerFileInput() {
+  fileInput.value?.click();
 }
 </script>
+
 <template>
   <div
     class="border-main relative flex h-47 w-50 cursor-pointer items-center justify-center rounded-2xl border-3"
+    @click="triggerFileInput"
   >
     <input
+      ref="fileInput"
       type="file"
-      class="absolute z-0 h-full w-full opacity-0"
+      class="hidden"
       accept="image/*"
-      @change="handleChange"
-      />
-    <!-- image uploaded -->
+      @change="uploadImage"
+    />
+
     <img
       v-if="imageURL"
       :src="imageURL"
-      alt="Uploaded File"
+      alt="Uploaded"
       class="absolute h-full w-full rounded-xl object-cover"
     />
-    <!-- Delete icon -->
+
     <svg
+      v-if="imageURL"
       width="34"
       height="31"
       viewBox="0 0 34 31"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      v-if="imageURL"
-      class="absolute top-2 right-2"
-      @click="deleteImage"
+      class="absolute top-2 right-2 z-10"
+      @click.stop="deleteImage"
     >
       <rect width="34" height="31" rx="15.5" fill="white" />
       <path
@@ -86,11 +99,12 @@ function handleChange(e) {
     </svg>
 
     <svg
+      v-else
       width="68"
       height="68"
       viewBox="0 0 68 68"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+     xmlns="http://www.w3.org/2000/svg"
       :class="imageURL ? 'absolute opacity-0' : ''"
     >
       <path
@@ -122,5 +136,6 @@ function handleChange(e) {
         stroke-linejoin="round"
       />
     </svg>
+
   </div>
 </template>

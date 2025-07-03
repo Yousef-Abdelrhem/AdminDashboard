@@ -311,6 +311,51 @@ export default {
         this.errors.confirmpassword = "";
       }
     },
+    methods: {
+        validateUsername() {
+            const usernamePattern = /^[a-zA-Z\s]{3,30}$/;
+            if (!this.username) {
+                this.errors.username = "Username is required";
+            } else if (this.username.replace(/\s/g, "").length < 3) {
+                this.errors.username = "Username must be at least 3 characters";
+            } else if (!usernamePattern.test(this.username.replace(/\s/g, ""))) {
+                this.errors.username = "Username must contain only letters";
+            } else {
+                this.errors.username = "";
+            }
+        },
+        validateEmail() {
+            const emailPattern =
+                /^[a-zA-Z][a-zA-Z0-9._%+-]*@[a-zA-Z.-]+\.[a-zA-Z]{2,}$/;
+            if (!this.email) {
+                this.errors.email = "Email is required";
+            } else if (!emailPattern.test(this.email)) {
+                this.errors.email = "Invalid email format (example@gmail.com)";
+            } else {
+                this.errors.email = "";
+            }
+        },
+        validatePassword() {
+            const passwordPattern =
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&.])[A-Za-z\d@$!%*?&.]{8,128}$/;
+            if (!this.password) {
+                this.errors.password = "Password is required";
+            } else if (!passwordPattern.test(this.password)) {
+                this.errors.password =
+                    "Password must be at least 8 characters long, including<br>At least one number and a Special character<br>At least one lowercase letter<br>At least one uppercase letter";
+            } else {
+                this.errors.password = "";
+            }
+        },
+        validateConfirmPassword() {
+            if (!this.confirmpassword) {
+                this.errors.confirmpassword = "Please confirm your password";
+            } else if (this.confirmpassword !== this.password) {
+                this.errors.confirmpassword = "Passwords do not match";
+            } else {
+                this.errors.confirmpassword = "";
+            }
+        },
 
     togglePasswordVisibility() {
       this.passwordVisible = !this.passwordVisible;

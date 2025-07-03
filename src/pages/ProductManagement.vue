@@ -53,11 +53,12 @@
         :changePage="changePage"
       />
     </section>
-    <ViewDetails
-      v-if="showViewModal"
-      :viewedProduct="viewedProduct"
-      @close="showViewModal = false"
-    />
+    <ViewDetails v-if="showViewModal" :viewedProduct="viewedProduct" @close="showViewModal = false" />
+    <DeleteConfirm
+  :show="showDeleteConfirm"
+  @cancel="showDeleteConfirm = false"
+  @confirm="confirmDeletion"
+/>
   </div>
 </template>
 
@@ -67,9 +68,11 @@ import FilterProduct from "../components/FilterProduct.vue";
 import ProductTable from "../components/ProductTable.vue";
 import SearchBar from "../components/SearchBar.vue";
 import ViewDetails from "../components/ViewDetails.vue";
+import DeleteConfirm from "../components/DeleteConfirm.vue";
 import { ref, computed, reactive, onMounted, watch } from "vue";
 import { useRouter } from "vue-router";
 import { getAllProducts } from "../services/productService";
+import { deleteProduct } from "../services/productService";
 
 const router = useRouter();
 
@@ -77,31 +80,15 @@ const selectedProducts = ref([]);
 const allProducts = ref([]);
 const products = ref([]);
 const searchQuery = ref("");
+const showDeleteConfirm = ref(false);
+const deleteMode = ref("single"); // or "bulk"
+const productToDelete = ref(null);
 
-// onMounted(async () => {
-//   try {
-//     const response = await getAllProducts();
-//     // if (response && Array.isArray(response.products)) {
-//     //   allProducts.value = response.products;
-//     //   products.value = [...allProducts.value];
-
-//     if (response && Array.isArray(response.products)) {
-//       const notDeleted = response.products.filter(p => !p.isDeleted);
-//       allProducts.value = notDeleted;
-//       products.value = [...notDeleted];
-//   } else {
-//     console.error("Error: Invalid data structure.", response);
-//   }
-// } catch (error) {
-//   console.error("Error fetching products:", error);
-// }
-// });
-
-onMounted(async () => {
+async function fetchProducts() {
   try {
     const response = await getAllProducts();
     if (response && Array.isArray(response.products)) {
-      const notDeleted = response.products.filter((p) => !p.isDeleted);
+      const notDeleted = response.products.filter((p) => !p.isDeleted); 
       allProducts.value = notDeleted;
       products.value = [...notDeleted];
     } else {
@@ -110,9 +97,11 @@ onMounted(async () => {
   } catch (error) {
     console.error("Error fetching products:", error);
   }
-});
+}
 
+onMounted(fetchProducts);
 import { deleteProduct } from "../services/productService";
+
 
 async function handleAction(action, product) {
   activeAction.value = action;
@@ -121,23 +110,29 @@ async function handleAction(action, product) {
   console.log(`Action: ${action} on`, product);
 
   if (action === "edit") {
-    router.push({ name: "EditProduct", params: { id: product._id } });
+    router.push({ name: 'EditProduct', params: { id: product._id } });
   } else if (action === "view") {
     viewedProduct.value = product;
     showViewModal.value = true;
   } else if (action === "delete") {
-    try {
-      await deleteProduct(product._id);
-      allProducts.value = allProducts.value.filter(
-        (p) => p.productId !== product.productId,
-      );
-      products.value = products.value.filter(
-        (p) => p.productId !== product.productId,
-      );
-    } catch (error) {
-      console.error("Error deleting product:", error);
-      alert("Failed to delete the product. Please try again.");
-    }
+
+    productToDelete.value = product;
+    deleteMode.value = "single";
+    showDeleteConfirm.value = true;
+//=======
+//    try {
+//      await deleteProduct(product._id);
+//      allProducts.value = allProducts.value.filter(
+//        (p) => p.productId !== product.productId,
+//      );
+//      products.value = products.value.filter(
+//        (p) => p.productId !== product.productId,
+//      );
+//    } catch (error) {
+//      console.error("Error deleting product:", error);
+//      alert("Failed to delete the product. Please try again.");
+//    }
+//>>>>>>> graduaction
   }
 
   openMenuIndex.value = null;
@@ -209,6 +204,11 @@ const activeProductId = ref(null);
 const showViewModal = ref(false);
 const viewedProduct = ref({});
 
+
+// async function deleteSelected() {
+//   if (selectedProducts.value.length === 0) {
+//     alert("Please select at least one product to delete.");
+//     return;
 // function handleAction(action, product) {
 //   activeAction.value = action;
 //   activeProductId.value = product.productId;
@@ -229,7 +229,29 @@ const viewedProduct = ref({});
 //     );
 //   }
 
-//   openMenuIndex.value = null;
+//   let failedDeletions = [];
+
+//   for (const id of selectedProducts.value) {
+//     const backendId = products.value.find(p => p.productId === id)?._id;
+//     if (!backendId) {
+//       failedDeletions.push(id);
+//       continue;
+//     }
+
+//     try {
+//       await deleteProduct(backendId);
+//     } catch (err) {
+//       console.error("Error deleting product:", backendId, err?.response?.data || err.message);
+//       failedDeletions.push(id);
+//     }
+//   }
+
+//   await fetchProducts();
+//   selectedProducts.value = [];
+
+//   if (failedDeletions.length > 0) {
+//     alert("Some deletions failed. Try again.");
+//   }
 // }
 
 function deleteSelected() {
@@ -237,16 +259,41 @@ function deleteSelected() {
     alert("Please select at least one product to delete.");
     return;
   }
-
-  allProducts.value = allProducts.value.filter(
-    (product) => !selectedProducts.value.includes(product.productId),
-  );
-  products.value = products.value.filter(
-    (product) => !selectedProducts.value.includes(product.productId),
-  );
-
-  selectedProducts.value = [];
+  deleteMode.value = "bulk";
+  showDeleteConfirm.value = true;
 }
+
+async function confirmDeletion() {
+  if (deleteMode.value === "single" && productToDelete.value) {
+    try {
+      await deleteProduct(productToDelete.value._id);
+    } catch (err) {
+      console.error("Error deleting product:", err);
+      alert("Failed to delete.");
+    }
+  }
+
+  if (deleteMode.value === "bulk") {
+    const failedDeletions = [];
+    for (const id of selectedProducts.value) {
+      const backendId = products.value.find(p => p.productId === id)?._id;
+      if (!backendId) continue;
+      try {
+        await deleteProduct(backendId);
+      } catch (err) {
+        failedDeletions.push(id);
+      }
+    }
+    if (failedDeletions.length > 0) {
+      alert("Some deletions failed.");
+    }
+    selectedProducts.value = [];
+  }
+
+  await fetchProducts();
+  showDeleteConfirm.value = false;
+}
+
 
 function addProduct() {
   router.push("/product-management/add-product");
