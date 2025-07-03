@@ -92,13 +92,6 @@ async function handleAction(action, product) {
     viewedProduct.value = product;
     showViewModal.value = true;
   } else if (action === "delete") {
-    // try {
-    //   await deleteProduct(product._id);
-    //   await fetchProducts(); 
-    // } catch (error) {
-    //   console.error("Error deleting product:", error);
-    //   alert("Failed to delete the product. Please try again.");
-    // }
     productToDelete.value = product;
     deleteMode.value = "single";
     showDeleteConfirm.value = true;

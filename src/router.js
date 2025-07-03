@@ -32,16 +32,12 @@ const routes = [
       { path: "translation-management", component: Home },
       { path: "currency-management", component: OrderDetails },
       {
-        path: '/editProduct/:id',
-        name: 'EditProduct', // Changed the name to 'EditProduct'
-        component: EditProduct
-      },
-      {
         path: '/orders/:id',
         name: 'OrderDetails',
         component: OrderDetails
       },
       { path: "product-management/add-product", component: AddProduct },
+      { path: "product-management/edit/:id", name: "EditProduct", component: EditProduct }
     ],
   },
 ];
