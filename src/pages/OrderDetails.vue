@@ -54,7 +54,8 @@
             Customer Name:
           </p>
           <p class="text-sm text-gray-800 sm:text-lg">
-            {{ uppercaseWord(orderDetails?.customer?.customerName) }}
+            {{ uppercaseWord(orderDetails?.user?.firstName) }}
+            {{ uppercaseWord(orderDetails?.user?.lastName) }}
           </p>
         </div>
         <div class="mb-3 flex gap-1">
@@ -62,7 +63,7 @@
             Customer Phone:
           </p>
           <p class="text-sm text-gray-800 sm:text-lg">
-            {{ orderDetails?.customer?.customerNumber }}
+            {{ orderDetails?.user?.phone || "N/A" }}
           </p>
         </div>
         <div class="mb-3 flex gap-1">
@@ -70,7 +71,7 @@
             Customer Email:
           </p>
           <p class="text-sm text-gray-800 sm:text-lg">
-            {{ orderDetails?.customer?.customerEmail }}
+            {{ orderDetails?.user?.email || "N/A" }}
           </p>
         </div>
       </section>
@@ -118,45 +119,26 @@
             Payment Method:
           </p>
           <p class="text-sm text-gray-800 sm:text-lg">
-            {{ uppercaseWord(orderDetails?.paymentInfo?.paymentMethod) }}
+            {{ uppercaseWord(orderDetails?.paymentMethod) }}
           </p>
         </div>
         <div class="mb-3 flex gap-1">
-          <p class="text-main-900 text-sm font-bold sm:text-lg">
-            Transaction ID:
-          </p>
-          <p class="text-sm text-gray-800 sm:text-lg">
-            {{ orderDetails?.paymentInfo?.transactionId }}
-          </p>
-        </div>
-        <div class="mb-3 flex gap-1">
-          <p class="text-main-900 text-sm font-bold sm:text-lg">Postal Code:</p>
-          <p class="text-sm text-gray-800 sm:text-lg">
-            {{ orderDetails?.paymentInfo?.billingPostalCode }}
-          </p>
-        </div>
-        <div class="flex gap-1">
           <p class="text-main-900 text-sm font-bold sm:text-lg">
             Payment Status:
           </p>
           <p
             :class="{
-              'text-[#FFB349]':
-                orderDetails?.paymentInfo.paymentStatus === 'pending',
-              'text-[#9ED5DB]':
-                orderDetails?.paymentInfo.paymentStatus === 'processing',
-              'text-[#D981FF]':
-                orderDetails?.paymentInfo.paymentStatus === 'shipped',
+              'text-[#FFB349]': orderDetails?.paymentStatus === 'pending',
+              'text-[#9ED5DB]': orderDetails?.paymentStatus === 'processing',
+              'text-[#D981FF]': orderDetails?.paymentStatus === 'shipped',
               'text-[#48CB5C]':
-                orderDetails?.paymentInfo.paymentStatus === 'delivered' ||
-                orderDetails?.paymentInfo.paymentStatus === 'paid',
-              'text-[#FF7C77]':
-                orderDetails?.paymentInfo.paymentStatus === 'canceled' ||
-                orderDetails?.paymentInfo.paymentStatus === 'canceled',
+                orderDetails?.paymentStatus === 'delivered' ||
+                orderDetails?.paymentStatus === 'paid',
+              'text-[#FF7C77]': orderDetails?.paymentStatus === 'canceled',
             }"
             class="text-sm font-bold sm:text-lg"
           >
-            {{ uppercaseWord(orderDetails?.paymentInfo.paymentStatus) }}
+            {{ uppercaseWord(orderDetails?.paymentStatus) }}
           </p>
         </div>
       </section>
@@ -170,36 +152,33 @@
         <table class="w-full">
           <thead>
             <tr class="text-gray-800">
-              <th class="px-3 py-5 text-sm sm:text-lg">Product Image</th>
               <th class="px-3 py-5 text-sm sm:text-lg">Product Name</th>
-              <th class="px-3 py-5 text-sm sm:text-lg">Description</th>
               <th class="px-3 py-5 text-sm sm:text-lg">Quantity</th>
               <th class="px-3 py-5 text-sm sm:text-lg">Price</th>
             </tr>
           </thead>
           <tbody>
             <tr
-              v-for="(product, index) in orderDetails?.products || []"
-              :key="product.productId"
+              v-for="(item, index) in orderDetails?.orderItems || []"
+              :key="item._id"
               :class="{ 'bg-[#F1D6B7]': index % 2 === 0 }"
             >
-              <td class="flex items-center justify-center px-3 py-3">
+              <td
+                class="flex items-center justify-center gap-2 py-3 text-center text-sm sm:text-lg"
+              >
                 <img
-                  class="border-main-900 h-12 w-12 rounded-full border-3"
-                  :src="product.productId.images?.[0] || 'default-image-url'"
+                  v-if="item.product?.images?.length"
+                  :src="item.product.images[0]"
+                  alt="Product Image"
+                  class="h-10 w-10 rounded object-cover"
                 />
+                <span>{{ item.product?.name || "N/A" }}</span>
               </td>
               <td class="py-3 text-center text-sm sm:text-lg">
-                {{ product.productId.name }}
-              </td>
-              <td class="py-2 text-center text-sm sm:text-lg">
-                {{ truncatedDescription(product.productId.description) }}
+                {{ item.quantity }}
               </td>
               <td class="py-3 text-center text-sm sm:text-lg">
-                {{ product.quantity }}
-              </td>
-              <td class="py-3 text-center text-sm sm:text-lg">
-                {{ product.productId.price }}
+                {{ item.price }}
               </td>
             </tr>
           </tbody>
@@ -211,7 +190,7 @@
         <div class="flex gap-1">
           <p class="text-main-900 text-lg font-bold">Total:</p>
           <p class="text-lg font-bold text-gray-800">
-            ${{ orderDetails?.totalPrice ?? 0 }}
+            ${{ orderDetails?.totalPrice.toFixed(2) ?? 0 }}
           </p>
         </div>
       </div>
